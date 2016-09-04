@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="UTF-8" />
+
+<title>テンポ解析ページ</title>
+
+
+<script>window.onload = function(){
+  var source, animationId;
+  var audioContext = new AudioContext;
+  var fileReader   = new FileReader;
+　
+  var analyser = audioContext.createAnalyser();
+  analyser.fftSize = 128;
+  analyser.connect(audioContext.destination);
+　
+  var canvas        = document.getElementById('visualizer');
+  var canvasContext = canvas.getContext('2d');
+  canvas.setAttribute('width', analyser.frequencyBinCount * 10);
+　
+  fileReader.onload = function(){
+    audioContext.decodeAudioData(fileReader.result, function(buffer){
+      if(source) {
+        source.stop();
+        cancelAnimationFrame(animationId);
+      }
+　
+      source = audioContext.createBufferSource();
+　
+      source.buffer = buffer;
+      source.connect(analyser);
+      source.start(0);
+　
+      animationId = requestAnimationFrame(render);
+    });
+  };
+　
+  document.getElementById('file').addEventListener('change', function(e){
+    fileReader.readAsArrayBuffer(e.target.files[0]);
+  });
+　
+  render = function(){
+    var spectrums = new Uint8Array(analyser.frequencyBinCount);
+    analyser.getByteFrequencyData(spectrums);
+　
+    canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+    for(var i=0, len=spectrums.length; i<len; i++){
+      canvasContext.fillRect(i*10, 0, 5, spectrums[i]);
+    }
+　
+    animationId = requestAnimationFrame(render);
+  };
+};
+</script>
+</head>
+
+<body>
+
+<script>
+var count=0;
+var last=null;
+var data=[];
+setInterval("modTick()", 50);
+function modTick(){
+count++;
+}
+function done(){
+var alltick=0;
+for(i=0;i<data.length;i++){
+alltick=alltick+data[i];
+}
+alert("♩="+alltick/data.length+"tick");
+}
+function KeyDownFunc(e){
+
+	// ------------------------------------------------------------
+	// 入力情報を取得
+	// ------------------------------------------------------------
+	// キーコード
+	var key_code = e.keyCode;
+if(key_code==32){
+if(last!=null){
+data.push(count-last);
+}
+last=count;
+}
+}
+// イベントリスナーに対応している
+if(document.addEventListener){
+
+	// キーボードを押したときに実行されるイベント
+	document.addEventListener("keydown" , KeyDownFunc);
+
+// アタッチイベントに対応している
+}else if(document.attachEvent){
+
+	// キーボードを押したときに実行されるイベント
+	document.attachEvent("onkeydown" , KeyDownFunc);
+
+}
+</script>
+<span style="font-size: 20pt; color: #000000;">テンポ解析ページ</span>　テンポにあわせてスペースキーを押してください。<br>
+<br>
+楽曲ファイルを選択<br>
+
+
+<input id="file" type="file"> <button onclick="done();">結果を計算</button><br>
+
+
+<canvas id="visualizer" height="255"></canvas>
+
+</body>
+
+</html>
+
