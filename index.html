@@ -111,7 +111,9 @@ var minute = time.getMinutes();
 document.getElementById("time").textContent=year+"/"+month+"/"+day+"　"+hour+":"+minute;
 }
 setInterval("getTime();",1000);
-
+$(window).on('touchmove.noScroll', function(e) {
+    e.preventDefault();
+});
 </script>
 </body>
 </html>
