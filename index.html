@@ -1,12 +1,117 @@
-<!DocType HTML>
+﻿﻿<!DOCTYPE html>
+<html>
+<haed>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>46nekoProject-OfficialSite</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<style>
+body{
+  background:url("data/background.jpg");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  background-size: cover;
+  margin:0px;
+  overflow:hidden;
+  -ms-content-zooming: none;
+}
+.on {
+ position: absolute; left: 0px; top: 0px; width: 100%; height: 92%;
+ transition: all 250ms 0s ease;
+}
+.off {
+ position: absolute; left: 0px; top: 0px; width: 0px; height: 0px;
+ transition: all 250ms 0s ease;
+}
+.menu {
+ position: absolute; display: none; left: 0px; bottom: 0px; width: 8%; height: 8%;
+ transition: all 300ms 0s ease;
+}
 
-<HTML>
-	<Head>
-		<Meta Charset = "UTF-8">
-		<Title>46nekoProject</Title>
-	</Head>
-	
-	<Body>
-		<H1 Align = "Center" Style = "Color: LightBlue;">Welcome to 46nekoProject!</H1>
-	</Body>
-</HTML>
+.active {
+ position: absolute; left: 0px; bottom: 8%; width: 50%; height: 80%; background-color: #000000; opacity: 0.9; color: #ffffff; font-size: 200%;
+ transition: all 300ms 0s ease;
+}
+</style>
+</head>
+<body>
+<div id="run" class="off">
+<div id="control" style="position: absolute; left: 0px; top: 0px; width: 100%; height: 4%; opacity: 0.9; background-color: #c4c4c4;">
+<div style="text-align: right;"><a href="#" onclick="popup();"><img src="data/new.png" style="width: auto; height: 100%;"></a><div style="width: 1%; display: inline-block;"></div><a href="#" onclick="closeRun();"><img src="data/close.png" style="width: auto; height: 100%;"></a></div>
+</div>
+<iframe id="project" name="project" src="" style="position: absolute; left: 0px; top: 4%; width: 100%; height: 96%;" frameborder="0"></iframe>
+</div>
+<div id="menu" class="menu">
+46nekoProject - Menu<div id="time" style="position: absolute; right: 0px; top: 0px; font-size: 50%;"></div>
+<hr>
+<div style="position: absolute; left: 8%; top: 60px; font-size: 75%;">
+<a href="#" onclick='webWindow("apps/JavaScriptSpeedTest/index.html")'>JavaScriptSpeedTest</a><br>
+<a href="#" onclick='notRecommended("apps/ToneCubesMod-OfficialHP/index.html")'>ToneCubesMod</a>
+</div>
+</div>
+<div id="bar" style="position: absolute; left: 0px; bottom: 0px; width: 100%; height: 8%; color: #ffffff; opacity: 0.9; background: linear-gradient(#0f0f0f, #2d2d2d); font-size: 200%;">
+<a href="#" onclick="menuclick();"><img src="data/cat.png" style="width: auto; height: 100%;"></a>
+</div>
+<div id="rotate" style="position: absolute; display: none; left: 0px; top: 0px; width: 100%; height: 100%; color: #ffffff; opacity: 0.9; background-color: #1f1f1f; font-size: 350%;">
+<div style="width: 100%; height: 25%;"></div>
+<center><img src="data/rotate.png" style="width: 30%; height: auto;"></center><br>
+<center>画面を横向きにしてください</center>
+</div>
+<script>
+var orient = window.onorientation;
+if(window.orientation==0||window.orientation==180){
+document.getElementById("rotate").style.display="block";
+}
+$(window).on("orientationchange resize",function(){
+if(window.orientation==0||window.orientation==180){
+document.getElementById("rotate").style.display="block";
+}else{
+document.getElementById("rotate").style.display="none";
+}
+});
+function notRecommended(url){
+if(window.confirm("このプロジェクトは新しいウィンドウ推奨です。\n新しいウィンドウで開きますか？")){
+window.open(url);
+} else {
+webWindow(url);
+}
+}
+var menu=false;
+function menuclick(){
+if(menu){
+document.getElementById("menu").setAttribute("class","menu");
+document.getElementById("menu").style.display="none";
+menu=false;
+}else{
+document.getElementById("menu").style.display="block";
+setTimeout('document.getElementById("menu").setAttribute("class","active");menu=true;', 1);
+}
+}
+function webWindow(url){
+menuclick();
+document.getElementById("run").setAttribute("class","on");
+document.getElementById("project").setAttribute("src",url);
+}
+function closeRun(){
+document.getElementById("run").setAttribute("class","off");
+document.getElementById("project").setAttribute("src","");
+}
+function popup(){
+window.open(document.getElementById("project").getAttribute("src"));
+}
+function getTime(){
+var time=new Date();
+var year = time.getFullYear();
+var month = time.getMonth()+1;
+var day = time.getDate();
+var hour = time.getHours();
+var minute = time.getMinutes();
+document.getElementById("time").textContent=year+"/"+month+"/"+day+"　"+hour+":"+minute;
+}
+setInterval("getTime();",1000);
+
+</script>
+</body>
+</html>
