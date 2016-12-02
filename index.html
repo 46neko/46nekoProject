@@ -147,7 +147,7 @@ var minute = time.getMinutes();
 document.getElementById("time").textContent=year+"/"+month+"/"+day+"　"+hour+":"+zeroPadding(minute,2);
 }
 setInterval("getTime();",1000);
-$(window).on('touchmove.noScroll', function(e) {
+element.addEventListener("touchmove", function(e) {
     e.preventDefault();
 });
 </script>
