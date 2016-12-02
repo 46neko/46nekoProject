@@ -45,6 +45,7 @@ body{
 </style>
 </head>
 <body>
+<div style="overflow:hidden; width: 100%; height: 100%;">
 <div id="run" class="off">
 <div style="position: absolute; left: 0px; top: 0px; width: 100%; height: 20px; opacity: 0.9; background-color: #c4c4c4;">
 <div style="text-align: right; height: 100%;"><a href="#" onclick="popup();"><img src="data/new.png" style="width: auto; height: 100%;"></a><div style="width: 10px; display: inline-block;"></div><a href="#" onclick="closeRun();"><img src="data/close.png" style="width: auto; height: 100%;"></a></div>
@@ -149,5 +150,6 @@ document.getElementById("time").textContent=year+"/"+month+"/"+day+"　"+hour+":
 setInterval("getTime();",1000);
 $(document).on('touchmove.noScroll', function(e) {e.preventDefault();});
 </script>
+</div>
 </body>
 </html>
