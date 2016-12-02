@@ -4,8 +4,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>46nekoProject-OfficialSite</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<link rel="icon" href="/favicon.ico" type="image/vnd.microsoft.icon">
+<script src="http://code.jquery.com/jquery.min.js"></script>
 <style>
 body{
   background: url(data/background.jpg) no-repeat center center fixed; 
@@ -18,11 +18,19 @@ body{
   -ms-content-zooming: none;
 }
 .on {
- position: absolute; left: 0px; top: 0px; width: 100%; height: 92%;
+ position: absolute; left: 0px; top: 0px; width: 100%; height: calc(100% - 40px);
  transition: all 250ms 0s ease;
 }
 .off {
- position: absolute; left: 0px; top: 0px; width: 0px; height: 0px;
+ position: absolute; left: 0px; bottom: 0px; width: 0px; height: 0px;
+ transition: all 250ms 0s ease;
+}
+.tool {
+ position: absolute; left: 0px; bottom: 8%; width: 450px; height: 300px; background-color: #000000; opacity: 0.9;
+ transition: all 250ms 0s ease;
+}
+.tooloff {
+ position: absolute; left: 0px; bottom: 0px; width: 0px; height: 0px; background-color: #000000; opacity: 0.9;
  transition: all 250ms 0s ease;
 }
 .menu {
@@ -31,27 +39,38 @@ body{
 }
 
 .active {
- position: absolute; left: 0px; bottom: 8%; width: 50%; height: 80%; background-color: #000000; opacity: 0.9; color: #ffffff; font-size: 200%;
+ position: absolute; left: 0px; bottom: 8%; width: 450px; height: 80%; background-color: #000000; opacity: 0.9; color: #ffffff; font-size: 200%;
  transition: all 300ms 0s ease;
 }
 </style>
 </head>
 <body>
 <div id="run" class="off">
-<div id="control" style="position: absolute; left: 0px; top: 0px; width: 100%; height: 4%; opacity: 0.9; background-color: #c4c4c4;">
-<div style="text-align: right;"><a href="#" onclick="popup();"><img src="data/new.png" style="width: auto; height: 100%;"></a><div style="width: 1%; display: inline-block;"></div><a href="#" onclick="closeRun();"><img src="data/close.png" style="width: auto; height: 100%;"></a></div>
+<div style="position: absolute; left: 0px; top: 0px; width: 100%; height: 20px; opacity: 0.9; background-color: #c4c4c4;">
+<div style="text-align: right; height: 100%;"><a href="#" onclick="popup();"><img src="data/new.png" style="width: auto; height: 100%;"></a><div style="width: 10px; display: inline-block;"></div><a href="#" onclick="closeRun();"><img src="data/close.png" style="width: auto; height: 100%;"></a></div>
 </div>
-<iframe id="project" name="project" src="" style="position: absolute; left: 0px; top: 4%; width: 100%; height: 96%;" frameborder="0"></iframe>
+<iframe id="project" name="project" src="" style="position: absolute; left: 0px; top: 20px; width: 100%; height: calc(100% - 20px);" frameborder="0"></iframe>
+</div>
+<div id="minitool" class="tooloff">
+<div  style="position: absolute; left: 0px; top: 0px; width: 100%; height: 20px; opacity: 0.9; background-color: #c4c4c4;">
+<div style="text-align: right; height: 100%;"><a href="#" onclick="closeTool();"><img src="data/close.png" style="width: auto; height: 100%;"></a></div>
+</div>
+<iframe id="webminitool" name="project" src="" style="position: absolute; left: 0px; top: 20px; width: 100%; height: calc(100% - 20px);" frameborder="0"></iframe>
 </div>
 <div id="menu" class="menu">
 46nekoProject - Menu<div id="time" style="position: absolute; right: 0px; top: 0px; font-size: 50%;"></div>
 <hr>
-<div style="position: absolute; left: 8%; top: 60px; font-size: 75%;">
+<div style="position: absolute; left: 40px; top: 60px; background-color:#ffffff; width:2px; height:calc(100% - 70px);"></div>
+<div style="position: absolute; left: 0px; top: 60px; width: 35px; height: 100%;">
+<a href="#" onclick='openTool("tools/manysearch.html");'><img src="data/search.png" style="width: 100%; height: auto;"></a><div style="height: 2px;"></div>
+<a href="#" onclick='openTool("tools/ScreenRecorder/index.html");'><img src="data/ScreenRecordIcon.png" style="width: 100%; height: auto;"></a>
+</div>
+<div style="position: absolute; left: 45px; top: 60px; font-size: 75%;">
 <a href="#" onclick='webWindow("apps/JavaScriptSpeedTest/index.html")'>JavaScriptSpeedTest</a><br>
 <a href="#" onclick='notRecommended("apps/ToneCubesMod-OfficialHP/index.html")'>ToneCubesMod</a>
 </div>
 </div>
-<div id="bar" style="position: absolute; left: 0px; bottom: 0px; width: 100%; height: 8%; color: #ffffff; opacity: 0.9; background: linear-gradient(#0f0f0f, #2d2d2d); font-size: 200%;">
+<div id="bar" style="position: absolute; left: 0px; bottom: 0px; width: 100%; height: 40px; color: #ffffff; opacity: 0.9; background: linear-gradient(#0f0f0f, #2d2d2d); font-size: 200%;">
 <a href="#" onclick="menuclick();"><img src="data/cat.png" style="width: auto; height: 100%;"></a>
 </div>
 <div id="rotate" style="position: absolute; display: none; left: 0px; top: 0px; width: 100%; height: 100%; color: #ffffff; opacity: 0.9; background-color: #1f1f1f; font-size: 350%;">
@@ -98,9 +117,26 @@ function closeRun(){
 document.getElementById("run").setAttribute("class","off");
 document.getElementById("project").setAttribute("src","");
 }
+function openTool(url){
+menuclick();
+document.getElementById("minitool").setAttribute("class","tool");
+document.getElementById("webminitool").setAttribute("src",url);
+}
+function closeTool(){
+document.getElementById("minitool").setAttribute("class","tooloff");
+document.getElementById("webminitool").setAttribute("src","");
+}
 function popup(){
 window.open(document.getElementById("project").getAttribute("src"));
 }
+var zeroPadding = function(number, digit) {
+    var numberLength = String(number).length;
+    if (digit > numberLength) {
+        return (new Array((digit - numberLength) + 1).join(0)) + number;
+    } else {
+        return number;
+    }
+};
 function getTime(){
 var time=new Date();
 var year = time.getFullYear();
@@ -108,7 +144,7 @@ var month = time.getMonth()+1;
 var day = time.getDate();
 var hour = time.getHours();
 var minute = time.getMinutes();
-document.getElementById("time").textContent=year+"/"+month+"/"+day+"　"+hour+":"+minute;
+document.getElementById("time").textContent=year+"/"+month+"/"+day+"　"+hour+":"+zeroPadding(minute,2);
 }
 setInterval("getTime();",1000);
 $(window).on('touchmove.noScroll', function(e) {
