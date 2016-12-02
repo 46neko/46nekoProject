@@ -39,7 +39,7 @@ body{
 }
 
 .active {
- position: absolute; left: 0px; bottom: 8%; width: 450px; height: 80%; background-color: #000000; opacity: 0.9; color: #ffffff; font-size: 200%;
+ position: absolute; left: 0px; bottom: 40px; width: 450px; height: 80%; background-color: #000000; opacity: 0.9; color: #ffffff; font-size: 200%;
  transition: all 300ms 0s ease;
 }
 </style>
@@ -147,9 +147,7 @@ var minute = time.getMinutes();
 document.getElementById("time").textContent=year+"/"+month+"/"+day+"　"+hour+":"+zeroPadding(minute,2);
 }
 setInterval("getTime();",1000);
-element.addEventListener("touchmove", function(e) {
-    e.preventDefault();
-});
+$(document).on('touchmove.noScroll', function(e) {e.preventDefault();});
 </script>
 </body>
 </html>
