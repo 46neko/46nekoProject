@@ -18,7 +18,7 @@ body{
   -ms-content-zooming: none;
 }
 .on {
- position: absolute; left: 0px; top: 0px; width: 100%; height: calc(100% - 40px);
+ position: absolute; left: 0px; top: 0px; width: 100%; height: calc(100% - 40px); background-color: rgba(255,255,255,0.6);
  transition: all 250ms 0s ease;
 }
 .off {
@@ -26,11 +26,11 @@ body{
  transition: all 250ms 0s ease;
 }
 .tool {
- position: absolute; left: 0px; bottom: 40px; width: 450px; height: 300px; background-color: #000000; opacity: 0.9;
+ position: absolute; left: 0px; bottom: 40px; width: 450px; height: 300px; background-color: rgba(0,0,0,0.9);
  transition: all 250ms 0s ease;
 }
 .tooloff {
- position: absolute; left: 0px; bottom: 0px; width: 0px; height: 0px; background-color: #000000; opacity: 0.9;
+ position: absolute; left: 0px; bottom: 0px; width: 0px; height: 0px; background-color: rgba(0,0,0,0.9);
  transition: all 250ms 0s ease;
 }
 .menu {
@@ -46,13 +46,13 @@ body{
 </head>
 <body>
 <div id="run" class="off">
-<div style="position: absolute; left: 0px; top: 0px; width: 100%; height: 20px; opacity: 0.9; background-color: #c4c4c4;">
+<div style="position: absolute; left: 0px; top: 0px; width: 100%; height: 20px; background-color: #b0b0b0;">
 <div style="text-align: right; height: 100%;"><a href="#" onclick="popup();"><img src="data/new.png" style="width: auto; height: 100%;"></a><div style="width: 10px; display: inline-block;"></div><a href="#" onclick="closeRun();"><img src="data/close.png" style="width: auto; height: 100%;"></a></div>
 </div>
 <iframe id="project" name="project" src="" style="position: absolute; left: 0px; top: 20px; width: 100%; height: calc(100% - 20px);" frameborder="0"></iframe>
 </div>
 <div id="minitool" class="tooloff">
-<div  style="position: absolute; left: 0px; top: 0px; width: 100%; height: 20px; opacity: 0.9; background-color: #c4c4c4;">
+<div  style="position: absolute; left: 0px; top: 0px; width: 100%; height: 20px; background-color: #b0b0b0;">
 <div style="text-align: right; height: 100%;"><a href="#" onclick="closeTool();"><img src="data/close.png" style="width: auto; height: 100%;"></a></div>
 </div>
 <iframe id="webminitool" name="project" src="" style="position: absolute; left: 0px; top: 20px; width: 100%; height: calc(100% - 20px);" frameborder="0"></iframe>
@@ -67,7 +67,7 @@ body{
 </div>
 <div style="position: absolute; left: 45px; top: 60px; font-size: 75%;">
 <a href="#" onclick='webWindow("apps/JavaScriptSpeedTest/index.html")'>JavaScriptSpeedTest</a><br>
-<a href="#" onclick='notRecommended("apps/ToneCubesMod-OfficialHP/index.html")'>ToneCubesMod</a><br>
+<a href="#" onclick='webWindow("apps/ToneCubesMod-OfficialHP/index.html")'>ToneCubesMod</a><br>
 <a href="#" onclick='webWindow("apps/smaphone/index.html")'>スマフォン</a>
 </div>
 </div>
