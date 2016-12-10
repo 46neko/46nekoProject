@@ -5,10 +5,29 @@
 <title>ToneCubesWeb</title>
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <script src="http://code.jquery.com/jquery.min.js"></script>
+<script src="https://apis.google.com/js/platform.js" async defer>
+  {lang: 'ja'}
+</script>
 <script>
 $(window).on('touchmove.noScroll', function(e) {
     e.preventDefault();
 });
+var menu=false;
+function menuclick(){
+if(menu){
+document.getElementById("top").setAttribute("class","menuback");
+document.getElementById("bottom").setAttribute("class","menuback");
+document.getElementById("left").setAttribute("class","menuback");
+document.getElementById("right").setAttribute("class","menuback");
+menu=false;
+}else{
+document.getElementById("top").setAttribute("class","top");
+document.getElementById("bottom").setAttribute("class","bottom");
+document.getElementById("left").setAttribute("class","left");
+document.getElementById("right").setAttribute("class","right");
+menu=true;
+}
+}
 </script>
 <style>
 @font-face {
@@ -17,21 +36,92 @@ src: url('data/chogokubosogothic.eot'),
 url('data/chogokubosogothic.woff');
 }
 body{
-  overflow:hidden;
   margin:0px;
   -ms-content-zooming: none;
   font-family: "chogokuboso", "HGS明朝E", "ヒラギノ明朝 Pro W6","Hiragino Mincho Pro","ＭＳ Ｐ明朝",serif !important;
 }
+.trim {
+    overflow: hidden;
+    width: 100%;/* トリミングしたい枠の幅 */
+    height: 100%;/* トリミングしたい枠の高さ */
+    position: relative;
+}
+.trim img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: auto;
+}
+.menuback{
+  position: absolute;
+  left: calc(100%/3);
+  top: calc(100%/3);
+  width: calc(100%/3);
+  height: calc(100%/3);
+  transition: all 300ms 0s ease;
+}
+.top{
+  position: absolute;
+  left: calc(100%/3);
+  top: 0;
+  width: calc(100%/3);
+  height: calc(100%/3);
+  transition: all 300ms 0s ease;
+}
+.bottom{
+  position: absolute;
+  left: calc(100%/3);
+  top: calc(100%/3*2);
+  width: calc(100%/3);
+  height: calc(100%/3);
+  transition: all 300ms 0s ease;
+}
+.left{
+  position: absolute;
+  left: 0;
+  top: calc(100%/3);
+  width: calc(100%/3);
+  height: calc(100%/3);
+  transition: all 300ms 0s ease;
+}
+.right{
+  position: absolute;
+  left: calc(100%/3*2);
+  top: calc(100%/3);
+  width: calc(100%/3);
+  height: calc(100%/3);
+  transition: all 300ms 0s ease;
+}
 </style>
 </head>
 <body>
-<p style="position: absolute; left: 10%; top: 25%; font-size:350%;">ToneCubesWebEd.</p>
-<div style="position: absolute; left: 0; top: 100%; width: 100%; height:100%;"></div>
-<div style="position: absolute; left:calc(50% - 400px); top: calc(150% - 100px);">
-<img id="run0" src="../tone_cube_editer/data/tone_0.png" width="200" height="200">
-<img id="run1" src="../tone_cube_editer/data/tone_0.png" width="200" height="200">
-<img id="run2" src="../tone_cube_editer/data/tone_0.png" width="200" height="200">
-<img id="run3" src="../tone_cube_editer/data/tone_0.png" width="200" height="200">
+<p style="position: absolute; left: 10%; top: 10%; font-size:350%;">ToneCubesWebEd.</p>
+<div style="position: absolute; right: 10%; top: calc(35% + 56px); display: inline-block; height: 45%;">
+<img src="data/Transparency_0.png" style="width: auto; height: 100%;">
+<a href="#" onclick="menu();"><img id="top" src="data/list_0.png" class="menuback"></a>
+<a href="#" onclick="menu();"><img id="bottom" src="data/up_0.png" class="menuback"></a>
+<a href="mailto:46neko.mod@gmail.com?subject=ToneCubeMod-フィードバック&amp;body="><img id="left" src="data/feedback_0.png" class="menuback"></a>
+<a href="#" onclick="menu();"><img id="right" src="data/share_0.png" class="menuback"></a>
+<a href="#" onclick="menuclick();"><img src="data/tone_max.png" style="position: absolute; left: calc(100%/3); top: calc(100%/3); width: calc(100%/3); height: calc(100%/3);"></a>
+</div>
+<div style="position: absolute; right: calc(10% + 50px); top: calc(35% + 56px); width: 50px; height: 60px;">
+<div class="g-plus" data-action="share" data-annotation="vertical-bubble" data-height="60"></div>
+</div>
+<div style="position: absolute; left: 0; top: 100%; width: 100%; height:100%; background-color: rgba(12,12,12,1);">
+<div class="trim"><img src="data/loading.gif" alt=""></div>
+</div>
+<div style="position: absolute; left: 0; top: 200%; width: 100%; height:100%;">
+<div style="height:30%"></div>
+<center>
+<img id="run0" src="../tone_cube_editer/data/tone_0.png" style="width: 15%; height:auto; position:">
+<img id="run1" src="../tone_cube_editer/data/tone_0.png" style="width: 15%; height:auto; position:">
+<img id="run2" src="../tone_cube_editer/data/tone_0.png" style="width: 15%; height:auto; position:">
+<img id="run3" src="../tone_cube_editer/data/tone_0.png" style="width: 15%; height:auto; position:">
+</center>
 </div>
 </body>
 </html>
