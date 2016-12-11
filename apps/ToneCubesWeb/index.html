@@ -30,20 +30,10 @@ preload(
 "../tone_cube_editer/data/tone_12.png",
 "../tone_cube_editer/data/tone_13.png"
 );
-function fileDownload(url){
-  var req = new XMLHttpRequest();
-  req.onreadystatechange = function() {
-    if(req.readyState == 4 && req.status == 200){
-      return req.responseText;
-    }
-  };
-  req.open("GET", url, false);
-  req.send(null);
-}
 function loaded(){
-var musics=[];
-eval("musics="+fileDownload("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.json"));
-alert(fileDownload("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.json"));
+$.getScript("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.js", function(){
+  alert(musics);
+});
 }
 var menu=false;
 function menuclick(){
