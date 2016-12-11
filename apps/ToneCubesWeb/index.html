@@ -42,6 +42,8 @@ function fileDownload(url){
 }
 function loaded(){
 var musics=[];
+eval("musics="+fileDownload("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.json"));
+alert(fileDownload("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.json"));
 }
 var menu=false;
 function menuclick(){
