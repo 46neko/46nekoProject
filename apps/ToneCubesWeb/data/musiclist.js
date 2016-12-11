@@ -1,1 +1,1 @@
-﻿var musics=["test1","test2"];
+﻿var musics=[["On my way v2 Free Short ver.","musics/On_my_way_v2_Free_Short_ver..wtcd"]];
