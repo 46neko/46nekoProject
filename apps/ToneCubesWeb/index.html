@@ -28,11 +28,8 @@ document.getElementById("right").setAttribute("class","right");
 menu=true;
 }
 }
-function openshare(){
-document.getElementById("sharewindow").style.display="block";
-}
-function closeshare(){
-document.getElementById("sharewindow").style.display="none";
+function share() {
+window.open("https://plus.google.com/u/0/share?url=https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/index.html","share","height=620,width=620,scrollbars=true");
 }
 </script>
 <style>
@@ -108,15 +105,15 @@ body{
 <p style="position: absolute; left: 10%; top: 10%; font-size:350%;">ToneCubesWebEd.</p>
 <div style="position: absolute; right: 10%; top: calc(35% + 56px); display: inline-block; height: 45%;">
 <img src="data/Transparency_0.png" style="width: auto; height: 100%;">
-<a href="#" onclick="menu();"><img id="top" src="data/list_0.png" class="menuback"></a>
-<a href="#" onclick="menu();"><img id="bottom" src="data/up_0.png" class="menuback"></a>
+<a href="#"><img id="top" src="data/list_0.png" class="menuback"></a>
+<a href="#"><img id="bottom" src="data/up_0.png" class="menuback"></a>
 <a href="mailto:46neko.mod@gmail.com?subject=ToneCubeMod-フィードバック&amp;body="><img id="left" src="data/feedback_0.png" class="menuback"></a>
-<a href="#" onclick="openshare();"><img id="right" src="data/share_0.png" class="menuback"></a>
-<a href="#" onclick="menuclick();"><img src="data/tone_max.png" style="position: absolute; left: calc(100%/3); top: calc(100%/3); width: calc(100%/3); height: calc(100%/3);"></a>
+<a href="javascript:share();"><img id="right" src="data/share_0.png" class="menuback"></a>
+<a href="javascript:menuclick();"><img src="data/tone_max.png" style="position: absolute; left: calc(100%/3); top: calc(100%/3); width: calc(100%/3); height: calc(100%/3);"></a>
 </div>
 <div id="sharewindow" style="display: none; position: absolute; right: calc(10% - 50px); top: calc(35% + 16px + 45%/3); width: 60px; height: 80px; background-color: #EEE8AA">
 <b style="float: right; font-size:15px;"><a href="#" onclick="closeshare();" style="text-decoration: none;">×</a></b>
-<div class="g-plus" data-action="share" data-annotation="vertical-bubble" data-height="60"></div>
+<center><div class="g-plus" data-action="share" data-annotation="vertical-bubble" data-height="60"></div>
 </div>
 <div style="position: absolute; left: 0; top: 100%; width: 100%; height:100%; background-color: rgba(12,12,12,1);">
 <div class="trim"><img src="data/loading.gif" alt=""></div>
