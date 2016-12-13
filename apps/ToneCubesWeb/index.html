@@ -31,9 +31,26 @@ preload(
 "../tone_cube_editer/data/tone_13.png"
 );
 function loaded(){
-$.getScript("data/musiclist.js", function(){
-  alert(musics);
+$.getScript("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.js", function(){
+for(i=0;i<musics.length;i++){
+document.getElementById("musiclist").innerHTML = '<a href="javascript:listload('+i+');">'+musics[i][0]+'</a>';
+}
 });
+}
+function fileDownload(url){
+alert("ok");
+var xmlhttp = new XMLHttpRequest();
+xmlhttp.open("GET",url,true);
+xmlhttp.onreadystatechange = function(){
+if(xmlhttp.readyState == 4 && xmlhttp.status==200){
+var data = xmlhttp.responseText;
+alert(data);
+return data;
+}
+}
+}
+function listload(i){
+fileDownload(musics[i][1]);
 }
 var menu=false;
 function menuclick(){
@@ -69,6 +86,10 @@ body{
   -ms-content-zooming: none;
   font-family: "chogokuboso", "HGS明朝E", "ヒラギノ明朝 Pro W6","Hiragino Mincho Pro","ＭＳ Ｐ明朝",serif !important;
 }
+a:link { color: #000000; }
+a:visited { color: #000000; }
+a:hover { color: #cbcbcb; }
+a:active { color: #000000; }
 .trim {
     overflow: hidden;
     width: 100%;/* トリミングしたい枠の幅 */
@@ -132,17 +153,20 @@ body{
 <p style="position: absolute; left: 10%; top: 10%; font-size:350%;">ToneCubesWebEd.</p>
 <div style="position: absolute; right: 10%; top: calc(35% + 56px); display: inline-block; height: 45%;">
 <img src="data/Transparency_0.png" style="width: auto; height: 100%;">
-<a href="#"><img id="top" src="data/list_0.png" class="menuback"></a>
+<a href="javascript:$('body,html').animate({scrollTop:0,scrollLeft:window.innerWidth}, 300, 'swing');"><img id="top" src="data/list_0.png" class="menuback"></a>
 <a href="javascript:upload();"><img id="bottom" src="data/up_0.png" class="menuback"></a>
 <a href="mailto:46neko.mod@gmail.com?subject=ToneCubeMod-フィードバック&amp;body="><img id="left" src="data/feedback_0.png" class="menuback"></a>
 <a href="javascript:share();"><img id="right" src="data/share_0.png" class="menuback"></a>
 <a href="javascript:menuclick();"><img src="data/tone_max.png" style="position: absolute; left: calc(100%/3); top: calc(100%/3); width: calc(100%/3); height: calc(100%/3);"></a>
 </div>
 <div style="position: absolute; left: 100%; top: 0; width: 100%; height:100%;">
-<b>tcdファイルを読み込む:<input type="file" id="tcd"></b>
+<b style="font-size:200%;">Music select</b>
+<a href="javascript:$('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');"><b>トップへ戻る</b></a>
+<b style="float: right;">tcdファイルを読み込む:<input type="file" id="tcd" accept=".tcd"></b>
 <hr>
 <b>
 <div id="musiclist"></div>
+<div id="details">
 </b>
 </div>
 <div style="position: absolute; left: 0; top: 100%; width: 100%; height:100%; background-color: rgba(12,12,12,1);">
