@@ -1,1 +1,1 @@
-﻿var musics=[["On my way v2 Free Short ver.","musics/On_my_way_v2_Free_Short_ver..wtcd"]];
+﻿var musics=[["On my way v2 Free Short ver.","musics/loader.On_my_way_v2_Free_Short_ver..js"]];
