@@ -54,9 +54,20 @@ httpobj.send(null);
 var data = httpobj.responseText;
 return data;
 }
+$('head').append(
+    '<style type="text/css">#container { display: none; } #fade, #loader { display: block; }</style>'
+);
+ 
+jQuery.event.add(window,"load",function() {
+    var pageH = $("#container").height();
+ 
+    $("#fade").css("height", pageH).delay(900).fadeOut(800);
+    $("#loader").delay(600).fadeOut(300);
+    $("#container").css("display", "block");
+});
 var tcd;
 function listload(i){
-document.getElementById("details").innerHTML = '<img src="data/loadingcircle.gif" style="display: table-cell; vertical-align: middle; text-align: center;">';
+document.getElementById("details").innerHTML = '<center><img src="data/loadingcircle.gif"></center>';
 //$('body,html').animate({scrollTop:$(window).outerHeight(true),scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 tcd=JSON.parse(fileDownload(musics[i][1]));
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">'+tcd.title+'</p><br>'+tcd.credit.replace(/\r?\n/g, '<br>');
@@ -123,6 +134,29 @@ a:active { color: #000000; }
   width: 100%;
   height: auto;
 }
+#loader {
+    width: 画像の幅px;
+    height: 画像の高さpx;
+    display: none;
+    position: fixed;
+    _position: absolute; /* IE6対策 */
+    top: 50%;
+    left: 50%;
+    margin-top: -XXpx; /* heightの半分のマイナス値 */
+    margin-left: -XXXpx; /* widthの半分のマイナス値 */
+    z-index: 100;
+}
+ 
+#fade {
+    width: 100%;
+    height: 100%;
+    display: none;
+    background-color: #FFFFFF;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 50;
+}
 .menuback{
   position: absolute;
   left: calc(100%/3);
@@ -186,7 +220,9 @@ a:active { color: #000000; }
 </style>
 </head>
 <body onload="loaded();">
-<img src="icon.png" style="display: none;">
+<div id="loader"><img src="icon.png" alt="Loading..."></div>
+<div id="fade"></div>
+<div id="container">
 <p style="position: absolute; left: 10%; top: 10%; font-size:350%;">ToneCubesWebEd.</p>
 <div style="position: absolute; right: 10%; top: calc(35% + 56px); display: inline-block; height: 45%;">
 <img src="data/Transparency_0.png" style="width: auto; height: 100%;">
@@ -222,5 +258,6 @@ a:active { color: #000000; }
 <img id="run3" src="../tone_cube_editer/data/tone_0.png" style="width: 15%; height:auto; position:">
 </center>
 </div>
+</div><!-- /container -->
 </body>
 </html>
