@@ -96,6 +96,7 @@ window.open("http://form1.fc2.com/form/?id=16fcea3e3f444050","popupwindw","heigh
 }
 function loaded() {
 $("#startload").fadeOut();
+$("#content").fadeIn();
 $.getScript("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.js", function(){
 for(i=0;i<musics.length;i++){
 document.getElementById("musiclist").innerHTML += '<a href="javascript:listload('+i+');">'+musics[i][0]+'</a>';
@@ -200,6 +201,7 @@ a:active { color: #000000; }
 </head>
 <body onload="loaded();">
 <div id="startload" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: #ffffff;"><img src="icon.png" width="320" height="46" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" alt="Loading..."></div>
+<div id="content">
 <p style="position: absolute; left: 10%; top: 10%; font-size:350%;">ToneCubesWebEd.</p>
 <div style="position: absolute; right: 10%; top: calc(35% + 56px); height: 45%; display:inline-block;">
 <img src="data/Transparency_0.png" style="width: auto; height: 100%;">
@@ -235,6 +237,7 @@ a:active { color: #000000; }
 <img id="run2" src="../tone_cube_editer/data/tone_0.png" style="width: 15%; height:auto; position:">
 <img id="run3" src="../tone_cube_editer/data/tone_0.png" style="width: 15%; height:auto; position:">
 </center>
+</div>
 </div>
 </body>
 </html>
