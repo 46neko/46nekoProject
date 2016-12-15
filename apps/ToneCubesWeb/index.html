@@ -94,7 +94,10 @@ window.open("https://plus.google.com/u/0/share?url=https://46neko.github.io/46ne
 function upload() {
 window.open("http://form1.fc2.com/form/?id=16fcea3e3f444050","popupwindw","height=620,width=620,scrollbars=true");
 }
-function loaded(){
+function loaded() {
+$(function () {
+$("#startload").fadeOut();
+});
 $.getScript("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.js", function(){
 for(i=0;i<musics.length;i++){
 document.getElementById("musiclist").innerHTML += '<a href="javascript:listload('+i+');">'+musics[i][0]+'</a>';
@@ -134,29 +137,7 @@ a:active { color: #000000; }
   width: 100%;
   height: auto;
 }
-#loader {
-    width: 画像の幅px;
-    height: 画像の高さpx;
-    display: none;
-    position: fixed;
-    _position: absolute; /* IE6対策 */
-    top: 50%;
-    left: 50%;
-    margin-top: -XXpx; /* heightの半分のマイナス値 */
-    margin-left: -XXXpx; /* widthの半分のマイナス値 */
-    z-index: 100;
-}
- 
-#fade {
-    width: 100%;
-    height: 100%;
-    display: none;
-    background-color: #FFFFFF;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    z-index: 50;
-}
+
 .menuback{
   position: absolute;
   left: calc(100%/3);
@@ -220,11 +201,9 @@ a:active { color: #000000; }
 </style>
 </head>
 <body onload="loaded();">
-<div id="loader"><img src="icon.png" alt="Loading..."></div>
-<div id="fade"></div>
-<div id="container">
+<div class="startload" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%;><img src="icon.png" width="320" height="46" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" alt="Loading..."></div>
 <p style="position: absolute; left: 10%; top: 10%; font-size:350%;">ToneCubesWebEd.</p>
-<div style="position: absolute; right: 10%; top: calc(35% + 56px); display: inline-block; height: 45%;">
+<div style="position: absolute; right: 10%; top: calc(35% + 56px); height: 45%; display:inline-block;">
 <img src="data/Transparency_0.png" style="width: auto; height: 100%;">
 <a href="javascript:$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');"><img id="top" src="data/list_0.png" class="menuback"></a>
 <a href="javascript:upload();"><img id="bottom" src="data/up_0.png" class="menuback"></a>
@@ -246,6 +225,7 @@ a:active { color: #000000; }
 <center>Now&nbsp;loading...</center>
 </div>
 </b>
+</div>
 <div style="position: absolute; left: 0; top: 100%; width: 100%; height: 100%; background-color: rgba(12,12,12,1);">
 <div class="trim"><img src="data/loading.gif" alt=""></div>
 </div>
@@ -258,6 +238,5 @@ a:active { color: #000000; }
 <img id="run3" src="../tone_cube_editer/data/tone_0.png" style="width: 15%; height:auto; position:">
 </center>
 </div>
-</div><!-- /container -->
 </body>
 </html>
