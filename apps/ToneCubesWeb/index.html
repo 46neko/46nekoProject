@@ -49,21 +49,17 @@ return new XMLHttpRequest();
 return null;
 }
 }
-function fileDownload(url){
-var httpobj = createHttpRequest();
-httpobj.open("GET",url,false);
-httpobj.send(null);
-var data = httpobj.responseText;
-return data;
-}
 var tcd;
 function listload(i) {
 document.getElementById("details").innerHTML = '<center><img src="data/loadingcircle.gif"></center>';
-const promise = new Promise((resolve, reject) => {
-tcd = JSON.parse(fileDownload(musics[i][1]));
-resolve();
+var httpobj = createHttpRequest();
+httpObj = new XMLHttpRequest();
+httpObj.open("get", musics[i][1], true);
+httpObj.onload = function () {
+tcd = JSON.parse(this.responseText);
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
-});
+}
+httpObj.send(null);
 }
 var menu=false;
 function menuclick(){
