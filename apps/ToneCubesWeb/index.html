@@ -57,10 +57,13 @@ var data = httpobj.responseText;
 return data;
 }
 var tcd;
-function listload(i){
+function listload(i) {
+const promise = new Promise((resolve, reject) => {
 document.getElementById("details").innerHTML = '<center><img src="data/loadingcircle.gif"></center>';
 tcd = JSON.parse(fileDownload(musics[i][1]));
-document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
+resolve();
+});
+promise.then(() => document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>'));
 }
 var menu=false;
 function menuclick(){
