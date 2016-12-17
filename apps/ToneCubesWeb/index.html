@@ -120,13 +120,13 @@ document.getElementById("score").innerHTML = zeroPadding(Math.ceil(score),6);
 if(typeof(tcd.cubes[Math.ceil(document.getElementById('audio').currentTime*20)+1])=="undefined"){
 document.getElementById("result").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 var tones=0;
-/*for(i=0;i<array.length;i++){
+for(i=0;i<array.length;i++){
 for(l=0;l<array[i].length;l++){
 if(array[i][l]==14){
 tones++;
 }
 }
-}*/
+}
 if(tones==0)document.getElementById("result").innerHTML += '<p class="fullcombo">Full combo</p>';
 document.getElementById("resultwindow").setAttribute("class","resulton");
 run=false;
@@ -252,8 +252,34 @@ document.getElementById("loadwindow").setAttribute("class","loaded");
 });
 if(document.addEventListener){
 document.getElementById("audio").addEventListener("loadeddata",played,false);
+document.getElementById("tcd").addEventListener("change",function(evt){
+var file = evt.target.files;
+var reader = new FileReader();
+reader.readAsText(file[0]);
+var file = evt.target.files;
+var reader = new FileReader();
+reader.readAsText(file[0]);
+reader.onload = function  (ev) {
+tcd=JSON.parse(reader.result);
+document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
+document.getElementById('start').style.display = 'block';
+}
+},false);
 }else if(document.attachEvent){
 document.getElementById("audio").attachEvent("loadeddata",played,false);
+document.getElementById("tcd").attachEvent("change",function(evt){
+var file = evt.target.files;
+var reader = new FileReader();
+reader.readAsText(file[0]);
+var file = evt.target.files;
+var reader = new FileReader();
+reader.readAsText(file[0]);
+reader.onload = function  (ev) {
+tcd=JSON.parse(reader.result);
+document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
+document.getElementById('start').style.display = 'block';
+}
+},false);
 }
 }
 </script>
@@ -281,8 +307,8 @@ a:active { color: #000000; }
 }
 .trim {
     overflow: hidden;
-    width: 100%;/* トリミングしたい枠の幅 */
-    height: 100%;/* トリミングしたい枠の高さ */
+    width: 100%;
+    height: 100%;
     position: relative;
 }
 .trim img {
