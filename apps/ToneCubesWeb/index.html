@@ -32,9 +32,6 @@ preload(
 "data/tone_14.png",
 "data/loadingcircle.gif"
 );
-document.getElementById("content").addEventListener("touchstart",function(e){
-e.preventDefault() ;
-});
 function createHttpRequest(){
 if(window.ActiveXObject){
 try{
@@ -258,6 +255,9 @@ document.getElementById("audio").addEventListener("loadeddata",played,false);
 }else if(document.attachEvent){
 document.getElementById("audio").attachEvent("loadeddata",played,false);
 }
+document.getElementById("content").addEventListener("touchstart",function(e){
+e.preventDefault() ;
+});
 }
 </script>
 <style>
