@@ -32,6 +32,9 @@ preload(
 "data/tone_14.png",
 "data/loadingcircle.gif"
 );
+document.getElementById("content").addEventListener("touchstart",function(e){
+e.preventDefault() ;
+});
 function createHttpRequest(){
 if(window.ActiveXObject){
 try{
