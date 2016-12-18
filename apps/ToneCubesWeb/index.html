@@ -116,7 +116,9 @@ document.getElementById("ra0").href = "javascript:tone(0,"+array[Math.ceil(docum
 document.getElementById("ra1").href = "javascript:tone(1,"+array[Math.ceil(document.getElementById('audio').currentTime*20)][1]+");";
 document.getElementById("ra2").href = "javascript:tone(2,"+array[Math.ceil(document.getElementById('audio').currentTime*20)][2]+");";
 document.getElementById("ra3").href = "javascript:tone(3,"+array[Math.ceil(document.getElementById('audio').currentTime*20)][3]+");";
-document.getElementById("score").innerHTML = zeroPadding(Math.ceil(score),6);
+var endscore=Math.ceil(score);
+if(endscore>100000)endscore=100000;
+document.getElementById("score").innerHTML = zeroPadding(endscore,6);
 if(typeof(tcd.cubes[Math.ceil(document.getElementById('audio').currentTime*20)+1])=="undefined"){
 document.getElementById("result").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 var tones=0;
