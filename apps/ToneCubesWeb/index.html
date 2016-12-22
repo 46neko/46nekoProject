@@ -6,8 +6,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <script>
-var x;
-var y;
+var step;
 $(window).on('touchmove.noScroll', function(e) {
     e.preventDefault();
 });
@@ -75,8 +74,7 @@ mload();
 }
 function mload(){
 $('body,html').animate({scrollTop:$(window).outerHeight(true),scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
-x=$(window).outerHeight(true);
-y=$(window).outerWidth(true);
+step=2;
 score=0;
 var tones=0;
 for(i=0;i<array.length;i++){
@@ -97,8 +95,7 @@ first=true;
 function played(){
 if(first){
 $('body,html').animate({scrollTop:$(window).outerHeight(true)*2,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
-x=$(window).outerHeight(true)*2;
-y=$(window).outerWidth(true);
+step=3;
 first=false;
 run=true;
 }
@@ -216,8 +213,7 @@ window.open("http://form1.fc2.com/form/?id=16fcea3e3f444050","popupwindw","heigh
 }
 function totop(){
 $('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
-x=0;
-y=0;
+step=0;
 setTimeout("document.getElementById('details').innerHTML = '';document.getElementById('start').style.display = 'none';",300);
 }
 var playmenu=false;
@@ -236,8 +232,7 @@ playmenu=true;
 }
 function end(){
 $('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
-x=0;
-y=$(window).outerWidth(true);
+step=1;
 run=false;
 document.getElementById("list").setAttribute("class","playmenu");
 document.getElementById("replay").setAttribute("class","playmenu");
@@ -254,10 +249,9 @@ start();
 }
 function loaded(){
 $('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
-x=0;
-y=0;
 $("#startload").fadeOut();
 $("#content").fadeIn();
+step=0;
 $.getScript("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.js", function(){
 for(i=0;i<musics.length;i++){
 document.getElementById("musiclist").innerHTML += '<a href="javascript:listload('+i+');">'+musics[i][0]+'</a><br>';
@@ -295,9 +289,6 @@ document.getElementById('start').style.display = 'block';
 }
 },false);
 }
-$(window).on('touchmove.noScroll', function(e) {
-    e.preventDefault();
-});
 var orient = window.onorientation;
 if(window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
@@ -306,9 +297,16 @@ $(window).on("orientationchange resize",function(){
 orient = window.onorientation;
 if(window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
+if(step==3&&!playmenu)playmenuclick();
 }else{
 document.getElementById("rotate").style.display="none";
-window.scrollTo(x,y);
+if(step==0)$('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
+if(step==1)$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
+if(step==2)$('body,html').animate({scrollTop:$(window).outerHeight(true),scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
+if(step==3){
+$('body,html').animate({scrollTop:$(window).outerHeight(true)*2,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
+setTimeout("playmenuclick()",1000);
+}
 }
 });
 }
@@ -462,7 +460,7 @@ a:active { color: #000000; }
 <p style="position: absolute; left: 10%; top: 10%; font-size:350%;">ToneCubesWebEd.</p>
 <div style="position: absolute; right: 10%; top: calc(35% + 56px); height: 45%; display:inline-block;">
 <img src="data/Transparency_0.png" style="width: auto; height: 100%;">
-<a href="javascript:$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');x=0;y=$(window).outerWidth(true);menuclick();"><img id="top" src="data/list_0.png" class="menuback"></a>
+<a href="javascript:$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');menuclick();step=1;"><img id="top" src="data/list_0.png" class="menuback"></a>
 <a href="javascript:upload();"><img id="bottom" src="data/up_0.png" class="menuback"></a>
 <a href="mailto:46neko.mod@gmail.com?subject=ToneCubeMod-フィードバック&amp;body="><img id="left" src="data/feedback_0.png" class="menuback"></a>
 <a href="javascript:share();"><img id="right" src="data/share_0.png" class="menuback"></a>
