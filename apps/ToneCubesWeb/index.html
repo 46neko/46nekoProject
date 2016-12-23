@@ -303,10 +303,7 @@ document.getElementById("rotate").style.display="none";
 if(step==0)$('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
 if(step==1)$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 if(step==2)$('body,html').animate({scrollTop:$(window).outerHeight(true),scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
-if(step==3){
-$('body,html').animate({scrollTop:$(window).outerHeight(true)*2,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
-setTimeout("playmenuclick()",1000);
-}
+if(step==3)$('body,html').animate({scrollTop:$(window).outerHeight(true)*2,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 }
 });
 }
