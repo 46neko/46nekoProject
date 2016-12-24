@@ -1,0 +1,457 @@
+﻿<!DOCTYPE html>
+
+<html>
+
+<head>
+<meta charset="UTF-8" />
+<title>ToneCubeEditer</title>
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script>
+preload = function(){
+	for(var i = 0; i<arguments.length; i++){
+		jQuery("<img>").attr("src", arguments[i]);
+	}
+};
+preload(
+"../tone_cube_editer/data/tone_0.png",
+"../tone_cube_editer/data/tone_1.png",
+"../tone_cube_editer/data/tone_2.png",
+"../tone_cube_editer/data/tone_3.png",
+"../tone_cube_editer/data/tone_4.png",
+"../tone_cube_editer/data/tone_5.png",
+"../tone_cube_editer/data/tone_6.png",
+"../tone_cube_editer/data/tone_7.png",
+"../tone_cube_editer/data/tone_8.png",
+"../tone_cube_editer/data/tone_9.png",
+"../tone_cube_editer/data/tone_10.png",
+"../tone_cube_editer/data/tone_11.png",
+"../tone_cube_editer/data/tone_12.png",
+"../tone_cube_editer/data/tone_13.png"
+);
+var nowdisplay=0;
+var run=false;
+var playarray=[];
+var editarray=[[0,0,0,0]];
+setInterval("modTick()", 50);
+function tload(){
+var title = document.input.mtitle.value;
+document.getElementById('download').setAttribute("download",title+".tcd")
+}
+function save(){
+var titlek = document.input.mtitle.value;
+var urlk = document.input.murl.value;
+var minik = document.input.tempo.value;
+var creditk = document.input.credit.value;
+convert();
+var output={title:titlek,url:urlk,mini:minik,cubes:array,edit:editarray,credit:creditk};
+var content = JSON.stringify(output);
+var blob = new Blob([ content ], { "type" : "text/plain" });
+if (window.navigator.msSaveBlob) {
+window.navigator.msSaveBlob(blob, title+".tcd");
+// msSaveOrOpenBlobの場合はファイルを保存せずに開ける
+window.navigator.msSaveOrOpenBlob(blob, title+".tcd");
+} else {
+document.getElementById("download").href = window.URL.createObjectURL(blob);
+}
+}
+function next(){
+if(nowdisplay+1==editarray.length){
+editarray.push([0,0,0,0]);
+}
+nowdisplay+=1;
+laneload();
+}
+function back(){
+if(nowdisplay-1>=0){
+nowdisplay-=1;
+laneload();
+}
+}
+function sdelete(){
+editarray.splice(nowdisplay,1);
+laneload();
+}
+function spush(){
+editarray.splice(nowdisplay,0,[0,0,0,0]);
+laneload();
+}
+function nt(){
+while(editarray.length<=Math.ceil(document.getElementById('audio').currentTime*20)){
+editarray.push([0,0,0,0]);
+}
+nowdisplay=Math.ceil(document.getElementById('audio').currentTime*20/document.input.tempo.value);
+laneload();
+}
+function modTick(){
+if(run){
+document.getElementById("run0").src = "../tone_cube_editer/data/tone_"+playarray[Math.ceil(document.getElementById('audio').currentTime*20)][0]+".png";
+document.getElementById("run1").src = "../tone_cube_editer/data/tone_"+playarray[Math.ceil(document.getElementById('audio').currentTime*20)][1]+".png";
+document.getElementById("run2").src = "../tone_cube_editer/data/tone_"+playarray[Math.ceil(document.getElementById('audio').currentTime*20)][2]+".png";
+document.getElementById("run3").src = "../tone_cube_editer/data/tone_"+playarray[Math.ceil(document.getElementById('audio').currentTime*20)][3]+".png";
+}
+}
+function ChangeTab(tabname) {
+   // タブメニュー実装
+   document.getElementById('tab1').style.display = 'none';
+   document.getElementById('tab2').style.display = 'none';
+   // タブメニュー実装
+   document.getElementById(tabname).style.display = 'block';
+if(tabname=='tab1'){
+run=false;
+}
+if(tabname=='tab2'){
+run=true;
+convert();
+}
+}
+function convert(){
+array = new Array(Math.ceil(document.getElementById('audio').duration*20));
+for(i=0;i<array.length;i++){
+array[i]=[0,0,0,0];
+}
+for(i=0;i<editarray.length;i++){
+if(editarray[i][0]!=14){
+editarray[i][0]=0;
+}
+if(editarray[i][1]!=14){
+editarray[i][1]=0;
+}
+if(editarray[i][2]!=14){
+editarray[i][2]=0;
+}
+if(editarray[i][3]!=14){
+editarray[i][3]=0;
+}
+}
+for(i=0;i<editarray.length;i++){
+if(Math.ceil(i*document.input.tempo.value)<array.length){
+array[Math.ceil(i*document.input.tempo.value)]=editarray[i];
+}
+}
+for(i=array.length-1;i>=0;i--){
+if(array[i][0]>0&&i-1>=0&&array[i-1][0]!=14){
+array[i-1][0]=array[i][0]-1;
+}
+}
+for(i=array.length-1;i>=0;i--){
+if(array[i][1]>0&&i-1>=0&&array[i-1][1]!=14){
+array[i-1][1]=array[i][1]-1;
+}
+}
+for(i=array.length-1;i>=0;i--){
+if(array[i][2]>0&&i-1>=0&&array[i-1][2]!=14){
+array[i-1][2]=array[i][2]-1;
+}
+}
+for(i=array.length-1;i>=0;i--){
+if(array[i][3]>0&&i-1>=0&&array[i-1][3]!=14){
+array[i-1][3]=array[i][3]-1;
+}
+}
+playarray=array;
+}
+function changeradio(){
+editarray[nowdisplay][0]=0;
+editarray[nowdisplay][1]=0;
+editarray[nowdisplay][2]=0;
+editarray[nowdisplay][3]=0;
+if(document.forms.editer.r0.checked){
+document.getElementById("lane0").src = "../tone_cube_editer/data/tone_14.png";
+editarray[nowdisplay][0]=14;
+}else{
+document.getElementById("lane0").src = "../tone_cube_editer/data/tone_0.png";
+}
+if(document.forms.editer.r1.checked){
+document.getElementById("lane1").src = "../tone_cube_editer/data/tone_14.png";
+editarray[nowdisplay][1]=14;
+}else{
+document.getElementById("lane1").src = "../tone_cube_editer/data/tone_0.png";
+}
+if(document.forms.editer.r2.checked){
+document.getElementById("lane2").src = "../tone_cube_editer/data/tone_14.png";
+editarray[nowdisplay][2]=14;
+}else{
+document.getElementById("lane2").src = "../tone_cube_editer/data/tone_0.png";
+}
+if(document.forms.editer.r3.checked){
+document.getElementById("lane3").src = "../tone_cube_editer/data/tone_14.png";
+editarray[nowdisplay][3]=14;
+}else{
+document.getElementById("lane3").src = "../tone_cube_editer/data/tone_0.png";
+}
+}
+function loadimg(){
+if(document.forms.editer.r0.checked){
+document.getElementById("lane0").src = "../tone_cube_editer/data/tone_14.png";
+}else{
+document.getElementById("lane0").src = "../tone_cube_editer/data/tone_0.png";
+}
+if(document.forms.editer.r1.checked){
+document.getElementById("lane1").src = "../tone_cube_editer/data/tone_14.png";
+}else{
+document.getElementById("lane1").src = "../tone_cube_editer/data/tone_0.png";
+}
+if(document.forms.editer.r2.checked){
+document.getElementById("lane2").src = "../tone_cube_editer/data/tone_14.png";
+}else{
+document.getElementById("lane2").src = "../tone_cube_editer/data/tone_0.png";
+}
+if(document.forms.editer.r3.checked){
+document.getElementById("lane3").src = "../tone_cube_editer/data/tone_14.png";
+}else{
+document.getElementById("lane3").src = "../tone_cube_editer/data/tone_0.png";
+}
+}
+function newone(){
+editarray=[[0,0,0,0]];
+nowdisplay=0;
+document.input.mtitle.value="";
+document.input.murl.value="";
+document.input.tempo.value="";
+tload();
+var element_audio = document.getElementById("audio");
+var url = document.input.murl.value;
+element_audio.src = url;
+element_audio.load();
+editarray=[[0,0,0,0]];
+nowdisplay=0;
+laneload();
+}
+function laneload(){
+document.forms.editer.r4.checked=true;
+for(i=0;i<4;i++){
+eval('document.forms.editer.r'+i+'.checked=false');
+if(editarray[nowdisplay][i]==14){
+eval('document.forms.editer.r'+i+'.checked=true');
+}
+}
+loadimg();
+}
+</script>
+<style type="text/css">
+/* ▼ タブメニュー全体の設定 */
+div.tabbox { margin: 15px 0 0 0; padding: 0px; width:100%; height:200px;}
+/* ▼ タブ部分のマージンとパディング領域を設定 */
+p.tabs { margin: 0px; padding: 0px; }
+p.tabs a {
+   /* ▼ リンクをタブのように見せる */
+   display: block; width: 100px; float: left;
+   margin: 0px 3px 0px 0px; padding: 3px;
+   text-align: center;
+   font-size:12px;
+}
+/* ▼ タブごとの配色設定 */
+p.tabs a.tab1 {text-decoration:none; background-color:#fafafa;border-right:1px solid #dcdcdc;border-left:1px solid #dcdcdc;border-top: 3px solid rgba(100, 100, 100, 0.85);  color: #666; font-weight:600;}
+p.tabs a.tab2 {text-decoration:none; background-color:#fafafa;border-right:1px solid #dcdcdc;border-left:1px solid #dcdcdc;border-top: 3px solid rgba(100, 100, 100, 0.85);  color: #666; font-weight:600;}
+p.tabs a:hover {opacity:0.7;filter:alpha(opacity=70);}
+/* ▼ タブ中身のボックス */
+div.tab {
+   /* ▼ ボックス共通の装飾 */
+   height: 200px;  clear: left;
+}
+/* ▼ 各ボックスの配色設定 */
+div#tab1 { border: 2px solid #DDD; background-color: #fbfbfb; }
+div#tab2 { border: 2px solid #DDD; background-color: #fbfbfb; }
+div.tab p { margin: 0.5em; }
+#loader-bg {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  background: #000;
+  z-index: 1;
+}
+#loader {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  margin-top: -100px;
+  margin-left: -100px;
+  text-align: center;
+  color: #fff;
+  z-index: 2;
+}
+</style>
+</head>
+
+<body>
+<div id="loader-bg">
+  <div id="loader">
+    <img src="../tone_cube_editer/data/img-loading.gif" width="200" height="200" alt="Now Loading..." />
+    <p>Now Loading...</p>
+  </div>
+</div>
+<div id="wrap">
+<form name="input">
+<span style="font-size: 20pt; color: #000000;">Tone cube editer</span>　<span style="font-size: 15pt; color: #000000;">ToneCubesの公式エディタです。　</span><div style="display: inline-block; _display: inline;">tcdファイルを読み込む:<input type="file" id="tcd" accept=".tcd"><input type="button" value="新規作成" onclick="newone()" /></div><br>
+<HR noshade>
+<div style="overflow: auto;"><div style="white-space:nowrap;">曲名:<input name="mtitle" value="" /><input type="button" value="適応" onclick="tload()" />　使用する楽曲のURL(MP3を推奨しています):<input name="murl" value="" /><input type="button" value="楽曲読み込み" onclick="mload()" />　最短ノーツ間隔:<input name="tempo" style="width:50px;" />tick<input type="button" value="適応" onclick="convert()" /><input type="button" value="テンポ解析ツール" onclick="window.open('../tone_cube_editer/tools/tempo_analysis.html', '_blank')" />　クレジット:<input name="credit" /></div></div></form>
+<HR noshade>
+<audio id="audio" controls style="width:100%; margin:0px 0px 5px 0px;">このブラウザはオーディオ未対応です。</audio><a id="download" href="#" download="title.tcd" onclick="save()" style="float: right;">tcdファイルを保存</a><br>
+<div class="tabbox">
+<p class="tabs">
+      <a href="#tab1" class="tab1" onclick="ChangeTab('tab1'); return false;">editer</a>
+      <a href="#tab2" class="tab2" onclick="ChangeTab('tab2'); return false;">run</a>
+   </p>
+   <div id="tab1" class="tab">
+<div id="edittab" style="height:200px;">
+<form id="editer">
+<input type="button" value="前へ" onclick="back()" style="float: left;" /><input type="button" value="delete" onclick="sdelete()" style="float: left;" /><input type="button" value="次へ" onclick="next()" style="float: right;" /><input type="button" value="push" onclick="spush()" style="float: right;" /><br>
+<div style="white-space:nowrap;">
+<center>
+<p style="display:inline-block; width:100px;">
+<input type="radio" id="r0" name="radio" onChange="changeradio()" />
+</p>
+<p style="display:inline-block;  width:100px;">
+<input type="radio" id="r1" name="radio" onChange="changeradio()" />
+</p>
+<p style="display:inline-block;  width:100px;">
+<input type="radio" id="r2" name="radio" onChange="changeradio()" />
+</p>
+<p style="display:inline-block;  width:100px;">
+<input type="radio" id="r3" name="radio" onChange="changeradio()" />
+</p>
+<p style="display:inline-block;  width:50px;">
+<input type="radio" id="r4" name="radio" onChange="changeradio()" checked />なし
+</p>
+</center>
+<center>
+<img id="lane0" src="../tone_cube_editer/data/tone_0.png" width="116.5" height="116.5">
+<img id="lane1" src="../tone_cube_editer/data/tone_0.png" width="116.5" height="116.5">
+<img id="lane2" src="../tone_cube_editer/data/tone_0.png" width="116.5" height="116.5">
+<img id="lane3" src="../tone_cube_editer/data/tone_0.png" width="116.5" height="116.5">
+<img src="../tone_cube_editer/data/Transparency_0.png" width="70" height="116.5">
+</center>
+</div>
+<input type="button" value="現在の再生位置にスキップ" onclick="nt()" style="float: right;" />
+</form>
+</div>
+   </div>
+
+   <div id="tab2" class="tab">
+<br>
+<br>
+<br>
+<center>
+<img id="run0" src="../tone_cube_editer/data/tone_0.png" width="116.5" height="116.5">
+<img id="run1" src="../tone_cube_editer/data/tone_0.png" width="116.5" height="116.5">
+<img id="run2" src="../tone_cube_editer/data/tone_0.png" width="116.5" height="116.5">
+<img id="run3" src="../tone_cube_editer/data/tone_0.png" width="116.5" height="116.5">
+</center>
+　 </div>
+   
+</div><!-- tabbox -->
+
+<!-- ページを開いた際の最初に表示されるタブの選択 -->
+<script type="text/javascript">
+   ChangeTab('tab1');
+</script>
+</body>
+</div>
+<script>
+var first=false;
+if(document.addEventListener){
+document.getElementById("audio").addEventListener("loadeddata",function(evt){
+if(first){
+document.getElementById("audio").pause();
+$(function () {
+  $('#loader-bg').delay(900).fadeOut(800);
+  $('#loader').delay(600).fadeOut(300);
+  $('#wrap').css('display', 'block');
+});
+first=false;
+}
+},false);
+}else if(document.attachEvent){
+document.getElementById("audio").attachEvent("loadeddata",function(evt){
+if(first){
+document.getElementById("audio").pause();
+$(function () {
+  $('#loader-bg').delay(900).fadeOut(800);
+  $('#loader').delay(600).fadeOut(300);
+  $('#wrap').css('display', 'block');
+});
+first=false;
+}
+},false);
+}
+if(document.addEventListener){
+document.getElementById("tcd").addEventListener("change",function(evt){
+  var file = evt.target.files;
+  //FileReaderの作成
+  var reader = new FileReader();
+  //テキスト形式で読み込む
+  reader.readAsText(file[0]);
+  
+  //読込終了後の処理
+  var file = evt.target.files;
+  //FileReaderの作成
+  var reader = new FileReader();
+  //テキスト形式で読み込む
+  reader.readAsText(file[0]);
+  //読み込み後
+  reader.onload = function  (ev) {
+tcd=JSON.parse(reader.result);
+document.input.mtitle.value=tcd.title;
+document.input.murl.value=tcd.url;
+document.input.tempo.value=tcd.mini;
+document.input.credit.value=tcd.credit;
+tload();
+mload();
+array=tcd.cubes;
+editarray=tcd.edit;
+nowdisplay=0;
+laneload();
+  }
+},false);
+}else if(document.attachEvent){
+document.getElementById("tcd").attachEvent("change",function(evt){
+  var file = evt.target.files;
+  //FileReaderの作成
+  var reader = new FileReader();
+  //テキスト形式で読み込む
+  reader.readAsText(file[0]);
+  
+  //読込終了後の処理
+  var file = evt.target.files;
+  //FileReaderの作成
+  var reader = new FileReader();
+  //テキスト形式で読み込む
+  reader.readAsText(file[0]);
+  //読み込み後
+  reader.onload = function  (ev) {
+tcd=JSON.parse(reader.result);
+document.input.mtitle.value=tcd.title;
+document.input.murl.value=tcd.url;
+document.input.tempo.value=tcd.mini;
+document.input.credit.value=tcd.credit;
+tload();
+mload();
+array=tcd.cubes;
+editarray=tcd.edit;
+nowdisplay=0;
+laneload();
+  }
+},false);
+}
+function mload(){
+$(function() {
+  var h = $(window).height();
+ 
+  $('#wrap').css('display','none');
+  $('#loader-bg ,#loader').height(h).css('display','block');
+});
+var element_audio = document.getElementById("audio");
+var url = document.input.murl.value;
+element_audio.src = url;
+element_audio.load();
+element_audio.play();
+first=true;
+}
+</script>
+</html>

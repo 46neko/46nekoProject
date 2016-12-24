@@ -1,0 +1,74 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>JavaScript Speed Test</title>
+<style type="text/css">
+<!--
+h2.uandd{/*タイトルの設定*/
+  font-size: 14px;/*文字サイズ*/
+  font-family: monospace;
+  margin: 0em 15px 0.7em 15px;/*余白。15%が右の余白です*/
+  }
+h2.uandd span.up{/*上がる文字*/
+  color: #FFFFFF;/*文字色*/
+  background-color: #D65151;/*背景色*/
+  padding: 0.2em 0.2em 0.1em 0.2em;
+  margin: 0 2px 0 0;
+  border: solid 1px #D65151;/*背景色と同じに*/
+  }
+h2.uandd span.down{/*下がる文字*/
+  color: #C65151;/*文字色*/
+  background-color: #FFFFFF;/*背景色*/
+  padding: 0.2em 0.2em 0.1em 0.2em;
+  margin: 0 2px 0 0;
+  border: solid 1px #D65151;/*背景色と同じに*/
+  position: relative;
+  top: 0.3em;/*下がる程度*/
+  z-index: 1;
+  }
+div.tit12{/*文章枠*/
+  font-size: 12px;/*文字サイズ*/
+  margin: -10px 15px 1em 15px;/*ここの-10pxは、合うように適宜変更を…*/
+  padding: 15px 0.4em 0.6em 0.4em;/*枠内余白*/
+  border: solid 1px #DD6666;/*枠色*/
+  }
+-->
+</style>
+</head>
+<body>
+<h2 class="uandd"><span class="up">Java</span><span class="down">Script</span><span class="up">Speed</span><span class="down">Test</span></h2>
+<div class="tit12">
+<h2 class="uandd"><span class="down">JavaScriptのコードの処理時間を計測できます</span></h2>
+<form name="input">
+<center>
+・コード入力欄
+</center>
+<center>
+<div style="max-width:600px; height:60%;">
+<textarea name="script" id="script" value="" style="width:100%; height:100%; overflow: auto;"></textarea>
+</div>
+</center>
+<br>
+<center>
+<div style="width:600px;">
+<div style="float: right;">実行回数:<input type="number" name="count" id="count" value="10" style="width:60px;" />回<font size="1">(回数を多くすればするほど精度は高くなります)</font>　<input type="button" value="実行" onclick="run()" /></div>
+</div>
+</center>
+<br>
+</form>
+</div>
+<script type="text/javascript" language="javascript">
+function run(){
+var jsst_alltime=0;
+for(jsst_for_count=0;jsst_for_count<document.input.count.value;jsst_for_count++){
+var jsst_startTime = new Date();
+eval(document.input.script.value);
+var jsst_endTime = new Date();
+jsst_alltime+=jsst_endTime-jsst_startTime;
+}
+alert(jsst_alltime/document.input.count.value+"ms");
+}
+</script>
+</body>
+</html>
