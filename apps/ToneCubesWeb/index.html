@@ -53,6 +53,7 @@ return null;
 var tcd;
 var first=false;
 function listload(i) {
+tmfadeout(1);
 document.getElementById("details").innerHTML = '<br><center><img src="data/loadingcircle.gif"></center>';
 var httpobj = createHttpRequest();
 httpObj = new XMLHttpRequest();
@@ -86,6 +87,27 @@ function mploaded(){
 mpfadein(0);
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 document.getElementById('start').style.display = 'block';
+}
+function tmfadein(vol){
+var element_audio = document.getElementById("tm");
+element_audio.volume=vol;
+if(vol<=0.9){
+setTimeout(function(){tmfadein(vol+0.1)},100);
+}
+}
+function tmfadeout(vol){
+var element_audio = document.getElementById("tm");
+element_audio.volume=vol;
+if(vol>=0.1){
+setTimeout(function(){tmfadeout(vol-0.1)},10);
+}
+}
+function tmloaded(){
+tmfadein(0);
+$('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
+step=0;
+$("#startload").fadeOut();
+$("#content").fadeIn();
 }
 var run=false;
 var score=0;
@@ -220,6 +242,7 @@ function totop(){
 $('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
 step=0;
 mpfadeout(document.getElementById("mp").volume);
+tmfadein(document.getElementById("mp").volume);
 setTimeout("document.getElementById('details').innerHTML = '';document.getElementById('start').style.display = 'none';",300);
 }
 var playmenu=false;
@@ -239,7 +262,7 @@ playmenu=true;
 function end(){
 $('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 step=1;
-mpfadein(document.getElementById("mp").volume);
+mpfadein(0);
 run=false;
 document.getElementById("list").setAttribute("class","playmenu");
 document.getElementById("replay").setAttribute("class","playmenu");
@@ -255,10 +278,11 @@ playmenu=false;
 start();
 }
 function loaded(){
-$('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
-$("#startload").fadeOut();
-$("#content").fadeIn();
-step=0;
+var element_audio = document.getElementById("tm");
+element_audio.src="data/sunburst.mp3";
+element_audio.load();
+element_audio.play();
+element_audio.loop = true;
 $.getScript("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.js", function(){
 for(i=0;i<musics.length;i++){
 document.getElementById("musiclist").innerHTML += '<a href="javascript:listload('+i+');">'+musics[i][0]+'</a><br>';
@@ -268,6 +292,7 @@ document.getElementById("loadwindow").setAttribute("class","loaded");
 if(document.addEventListener){
 document.getElementById("audio").addEventListener("loadeddata",played,false);
 document.getElementById("mp").addEventListener("loadeddata",mploaded,false);
+document.getElementById("tm").addEventListener("loadeddata",tmloaded,false);
 document.getElementById("tcd").addEventListener("change",function(evt){
 var file = evt.target.files;
 var reader = new FileReader();
@@ -462,10 +487,11 @@ a:active { color: #000000; }
 <body onload="loaded();">
 <div id="startload" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: #ffffff;"><img src="icon.png" width="320" height="46" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: auto;" alt="Loading..."></div>
 <div id="content" style="display:none;">
+<audio id="tm" controls style="width:100%; display:none;"></audio>
 <p style="position: absolute; left: 10%; top: 10%; font-size:350%;">ToneCubesWebEd.</p>
 <div style="position: absolute; right: 10%; top: calc(35% + 56px); height: 45%; display:inline-block;">
 <img src="data/Transparency_0.png" style="width: auto; height: 100%;">
-<a href="javascript:$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');menuclick();step=1;"><img id="top" src="data/list_0.png" class="menuback"></a>
+<a href="javascript:$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');step=1;menuclick();"><img id="top" src="data/list_0.png" class="menuback"></a>
 <a href="javascript:upload();"><img id="bottom" src="data/up_0.png" class="menuback"></a>
 <a href="mailto:46neko.mod@gmail.com?subject=ToneCubeMod-フィードバック&amp;body="><img id="left" src="data/feedback_0.png" class="menuback"></a>
 <a href="javascript:share();"><img id="right" src="data/share_0.png" class="menuback"></a>
