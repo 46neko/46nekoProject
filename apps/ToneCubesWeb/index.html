@@ -242,7 +242,7 @@ function totop(){
 $('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
 step=0;
 mpfadeout(document.getElementById("mp").volume);
-tmfadein(document.getElementById("mp").volume);
+tmfadein(document.getElementById("tm").volume);
 setTimeout("document.getElementById('details').innerHTML = '';document.getElementById('start').style.display = 'none';",300);
 }
 var playmenu=false;
@@ -304,10 +304,18 @@ reader.onload = function  (ev) {
 tcd=JSON.parse(reader.result);
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 document.getElementById('start').style.display = 'block';
+tmfadeout(1);
+var element_audio = document.getElementById("mp");
+var url = tcd.url;
+element_audio.src = url;
+element_audio.load();
+element_audio.play();
 }
 },false);
 }else if(document.attachEvent){
 document.getElementById("audio").attachEvent("loadeddata",played,false);
+document.getElementById("mp").attachEvent("loadeddata",mploaded,false);
+document.getElementById("tm").attachEvent("loadeddata",tmloaded,false);
 document.getElementById("tcd").attachEvent("change",function(evt){
 var file = evt.target.files;
 var reader = new FileReader();
@@ -319,6 +327,12 @@ reader.onload = function  (ev) {
 tcd=JSON.parse(reader.result);
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 document.getElementById('start').style.display = 'block';
+tmfadeout(1);
+var element_audio = document.getElementById("mp");
+var url = tcd.url;
+element_audio.src = url;
+element_audio.load();
+element_audio.play();
 }
 },false);
 }
