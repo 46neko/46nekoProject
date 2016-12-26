@@ -304,6 +304,12 @@ reader.onload = function  (ev) {
 tcd=JSON.parse(reader.result);
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 document.getElementById('start').style.display = 'block';
+tmfadeout(1);
+var element_audio = document.getElementById("mp");
+var url = tcd.url;
+element_audio.src = url;
+element_audio.load();
+element_audio.play();
 }
 },false);
 }else if(document.attachEvent){
@@ -321,6 +327,12 @@ reader.onload = function  (ev) {
 tcd=JSON.parse(reader.result);
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 document.getElementById('start').style.display = 'block';
+tmfadeout(1);
+var element_audio = document.getElementById("mp");
+var url = tcd.url;
+element_audio.src = url;
+element_audio.load();
+element_audio.play();
 }
 },false);
 }
