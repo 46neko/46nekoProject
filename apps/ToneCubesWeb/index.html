@@ -93,7 +93,7 @@ var coefficient;
 var array;
 function start(){
 array=tcd.cubes;
-mpfadeout(1);
+mpfadeout(document.getElementById("mp").volume);
 mload();
 }
 function mload(){
@@ -219,7 +219,7 @@ window.open("http://form1.fc2.com/form/?id=16fcea3e3f444050","popupwindw","heigh
 function totop(){
 $('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
 step=0;
-mpfadeout(1);
+mpfadeout(document.getElementById("mp").volume);
 setTimeout("document.getElementById('details').innerHTML = '';document.getElementById('start').style.display = 'none';",300);
 }
 var playmenu=false;
@@ -239,7 +239,7 @@ playmenu=true;
 function end(){
 $('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 step=1;
-mpfadein(0);
+mpfadein(document.getElementById("mp").volume);
 run=false;
 document.getElementById("list").setAttribute("class","playmenu");
 document.getElementById("replay").setAttribute("class","playmenu");
