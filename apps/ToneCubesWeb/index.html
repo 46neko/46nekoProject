@@ -308,6 +308,8 @@ document.getElementById('start').style.display = 'block';
 },false);
 }else if(document.attachEvent){
 document.getElementById("audio").attachEvent("loadeddata",played,false);
+document.getElementById("mp").attachEvent("loadeddata",mploaded,false);
+document.getElementById("tm").attachEvent("loadeddata",tmloaded,false);
 document.getElementById("tcd").attachEvent("change",function(evt){
 var file = evt.target.files;
 var reader = new FileReader();
