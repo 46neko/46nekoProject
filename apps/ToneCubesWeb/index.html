@@ -291,7 +291,7 @@ document.getElementById("loadwindow").setAttribute("class","loaded");
 });
 if(document.addEventListener){
 document.getElementById("audio").addEventListener("loadeddata",played,false);
-document.getElementById("mp").addEventListener("loadeddata",mploaded,false);
+document.getElementById("mp").addEventListener("play",mploaded,false);
 document.getElementById("tm").addEventListener("loadeddata",tmloaded,false);
 document.getElementById("tcd").addEventListener("change",function(evt){
 var file = evt.target.files;
@@ -314,7 +314,7 @@ element_audio.play();
 },false);
 }else if(document.attachEvent){
 document.getElementById("audio").attachEvent("loadeddata",played,false);
-document.getElementById("mp").attachEvent("loadeddata",mploaded,false);
+document.getElementById("mp").attachEvent("play",mploaded,false);
 document.getElementById("tm").attachEvent("loadeddata",tmloaded,false);
 document.getElementById("tcd").attachEvent("change",function(evt){
 var file = evt.target.files;
