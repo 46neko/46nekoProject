@@ -55,15 +55,15 @@ var first=false;
 function listload(i) {
 tmfadeout(1);
 document.getElementById("details").innerHTML = '<br><center><img src="data/loadingcircle.gif"></center>';
+var element_audio = document.getElementById("mp");
+element_audio.src = musics[i][2];
+element_audio.load();
 var httpobj = createHttpRequest();
 httpObj = new XMLHttpRequest();
 httpObj.open("get", musics[i][1], true);
 httpObj.onload = function () {
 tcd = JSON.parse(this.responseText);
 var element_audio = document.getElementById("mp");
-var url = tcd.url;
-element_audio.src = url;
-element_audio.load();
 element_audio.play();
 }
 httpObj.send(null);
