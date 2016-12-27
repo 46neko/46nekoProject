@@ -294,7 +294,7 @@ var element_audio = document.getElementById("tm");
 element_audio.src="data/sunburst.mp3";
 element_audio.load();
 var p=element_audio.play();
-p.catch(function(e) {
+if(typeof p!='undefined')p.catch(function(e) {
 document.getElementById('agree').style.display = 'block';
 document.getElementById("content").setAttribute("class","blur");
 });
@@ -402,7 +402,6 @@ a:active { color: #000000; }
   -webkit-border-radius: 5;
   -moz-border-radius: 5;
   border-radius: 5px;
-  color: #ffffff;
   font-size: 20px;
   background: #3498db;
   padding: 10px 20px 10px 20px;
