@@ -10,6 +10,12 @@ var step;
 $(window).on('touchmove.noScroll', function(e) {
     e.preventDefault();
 });
+$(window).focus();
+$(window).bind("focus",function(){
+
+}).bind("blur",function(){
+
+});
 preload = function(){
 	for(var i = 0; i<arguments.length; i++){
 		jQuery("<img>").attr("src", arguments[i]);
@@ -579,7 +585,8 @@ a:active { color: #000000; }
 <center><img src="data/rotate.png" style="width: 30%; height: auto;"></center><br>
 <center>画面を横向きに<br>してください</center>
 </div>
-<div id="agree" style="display:none; position: fixed; left: 20%; top: 20%; width: 60%; height: 60%; background-color: #ffffff; font-size: 150%;">
+<div id="agree" style="display: none; position: fixed; left: 0px; top: 0px; width: 100%; height: 100%; background-color: rgba(120,120,120,0.5);">
+<div style="position: absolute; left: 20%; top: 20%; width: 60%; height: 60%; background-color: #ffffff; font-size: 150%;">
 <div style="width: 100%; height: 20%;"></div>
 <center><b>音声の再生を許可してください</b></center>
 <div style="width: 100%; height: 20%;"></div>
