@@ -291,13 +291,12 @@ document.getElementById("content").setAttribute("class","");
 function loaded(){
 var element_audio = document.getElementById("tm");
 element_audio.src="data/sunburst.mp3";
-try{
 element_audio.load();
-element_audio.play();
-}catch(e){
+var p=element_audio.play();
+p.catch(function(e) {
 document.getElementById('agree').style.display = 'block';
 document.getElementById("content").setAttribute("class","blur");
-}
+});
 $.getScript("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.js", function(){
 for(i=0;i<musics.length;i++){
 document.getElementById("musiclist").innerHTML += '<a href="javascript:listload('+i+');">'+musics[i][0]+'</a><br>';
