@@ -188,9 +188,9 @@ run=false;
 document.onkeydown = function (e){
 switch(e.keyCode){
 case 67:tone(0,array[Math.ceil(document.getElementById('audio').currentTime*20)][0]);break;
-case 86:tone(0,array[Math.ceil(document.getElementById('audio').currentTime*20)][1]);break;
-case 66:tone(0,array[Math.ceil(document.getElementById('audio').currentTime*20)][2]);break;
-case 78:tone(0,array[Math.ceil(document.getElementById('audio').currentTime*20)][3]);break;
+case 86:tone(1,array[Math.ceil(document.getElementById('audio').currentTime*20)][1]);break;
+case 66:tone(2,array[Math.ceil(document.getElementById('audio').currentTime*20)][2]);break;
+case 78:tone(3,array[Math.ceil(document.getElementById('audio').currentTime*20)][3]);break;
 }
 };
 function tone(b,lid){
@@ -297,7 +297,6 @@ element_audio.play();
 }catch(e){
 document.getElementById('agree').style.display = 'block';
 document.getElementById("content").setAttribute("class","blur");
-alert("ok");
 }
 $.getScript("https://46neko.github.io/46nekoProject/apps/ToneCubesWeb/data/musiclist.js", function(){
 for(i=0;i<musics.length;i++){
