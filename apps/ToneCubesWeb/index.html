@@ -7,14 +7,18 @@
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <script>
 var step;
+var mp=false;
 $(window).on('touchmove.noScroll', function(e) {
     e.preventDefault();
 });
 $(window).focus();
 $(window).bind("focus",function(){
-
+if(mp)document.getElementById("mp").play();
+if(tm)document.getElementById("tm").play();
 }).bind("blur",function(){
-
+if(mp)document.getElementById("mp").pause();
+if(tm)document.getElementById("tm").pause();
+if(step==3&&!playmenu)playmenuclick();
 });
 preload = function(){
 	for(var i = 0; i<arguments.length; i++){
@@ -39,6 +43,7 @@ preload(
 "data/tone_14.png",
 "data/loadingcircle.gif"
 );
+var mpfirst=false;
 function createHttpRequest(){
 if(window.ActiveXObject){
 try{
@@ -71,13 +76,14 @@ httpObj.onload = function () {
 tcd = JSON.parse(this.responseText);
 var element_audio = document.getElementById("mp");
 element_audio.play();
+mpfirst=true;
 }
 httpObj.send(null);
 }
 function mpfadein(vol){
 var element_audio = document.getElementById("mp");
-if(vol==0)element_audio.currentTime=0;
 element_audio.volume=vol;
+if(vol)mp=true;
 if(vol<=0.9){
 setTimeout(function(){mpfadein(vol+0.1)},100);
 }
@@ -87,12 +93,18 @@ var element_audio = document.getElementById("mp");
 element_audio.volume=vol;
 if(vol>=0.1){
 setTimeout(function(){mpfadeout(vol-0.1)},10);
+}else{
+mp=false;
 }
 }
 function mploaded(){
+if(mpfirst){
 mpfadein(0);
+mpfirst=false;
+document.getElementById("mp").currentTime=0;
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 document.getElementById('start').style.display = 'block';
+}
 }
 function tmfadein(vol){
 var element_audio = document.getElementById("tm");
@@ -269,12 +281,13 @@ playmenu=true;
 function end(){
 $('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 step=1;
-mpfadein(0);
-run=false;
 document.getElementById("list").setAttribute("class","playmenu");
 document.getElementById("replay").setAttribute("class","playmenu");
 document.getElementById("resultwindow").setAttribute("class","resultoff");
 playmenu=false;
+mpfadein(0);
+document.getElementById("mp").currentTime=0;
+run=false;
 }
 function replay(){
 run=false;
@@ -295,12 +308,15 @@ function cancel(){
 document.getElementById('agree').style.display = 'none';
 document.getElementById("content").setAttribute("class","");
 }
+var tm=false;
 function loaded(){
 var element_audio = document.getElementById("tm");
 element_audio.src="data/sunburst.mp3";
 element_audio.load();
 var p=element_audio.play();
+tm=true;
 if(typeof p!='undefined')p.catch(function(e) {
+tm=false;
 document.getElementById('agree').style.display = 'block';
 document.getElementById("content").setAttribute("class","blur");
 });
@@ -325,7 +341,8 @@ reader.onload = function  (ev) {
 tcd=JSON.parse(reader.result);
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 document.getElementById('start').style.display = 'block';
-tmfadeout(1);
+mpfadeout(document.getElementById("mp").volume);
+tmfadeout(document.getElementById("tm").volume);
 }
 },false);
 }else if(document.attachEvent){
@@ -343,7 +360,8 @@ reader.onload = function  (ev) {
 tcd=JSON.parse(reader.result);
 document.getElementById("details").innerHTML = '<p style="font-size:150%;">' + tcd.title + '</p><br>' + tcd.credit.replace(/\r?\n/g, '<br>');
 document.getElementById('start').style.display = 'block';
-tmfadeout(1);
+mpfadeout(document.getElementById("mp").volume);
+tmfadeout(document.getElementById("tm").volume);
 }
 },false);
 }
