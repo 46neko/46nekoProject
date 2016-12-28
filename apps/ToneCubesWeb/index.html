@@ -11,15 +11,6 @@ var mp=false;
 $(window).on('touchmove.noScroll', function(e) {
     e.preventDefault();
 });
-$(window).focus();
-$(window).bind("focus",function(){
-if(mp)document.getElementById("mp").play();
-if(tm)document.getElementById("tm").play();
-}).bind("blur",function(){
-if(mp)document.getElementById("mp").pause();
-if(tm)document.getElementById("tm").pause();
-if(step==3&&!playmenu)playmenuclick();
-});
 preload = function(){
 	for(var i = 0; i<arguments.length; i++){
 		jQuery("<img>").attr("src", arguments[i]);
@@ -345,6 +336,16 @@ mpfadeout(document.getElementById("mp").volume);
 tmfadeout(document.getElementById("tm").volume);
 }
 },false);
+document.addEventListener('webkitvisibilitychange', function(){
+if ( document.webkitHidden ) {
+if(mp)document.getElementById("mp").pause();
+if(tm)document.getElementById("tm").pause();
+if(step==3&&!playmenu)playmenuclick();
+} else {
+if(mp)document.getElementById("mp").play();
+if(tm)document.getElementById("tm").play();
+}
+}, false);
 }else if(document.attachEvent){
 document.getElementById("audio").attachEvent("loadeddata",played,false);
 document.getElementById("mp").attachEvent("play",mploaded,false);
@@ -364,6 +365,16 @@ mpfadeout(document.getElementById("mp").volume);
 tmfadeout(document.getElementById("tm").volume);
 }
 },false);
+document.attachEvent('webkitvisibilitychange', function(){
+if ( document.webkitHidden ) {
+if(mp)document.getElementById("mp").pause();
+if(tm)document.getElementById("tm").pause();
+if(step==3&&!playmenu)playmenuclick();
+} else {
+if(mp)document.getElementById("mp").play();
+if(tm)document.getElementById("tm").play();
+}
+}, false);
 }
 var orient = window.onorientation;
 if(window.orientation==0||window.orientation==180){
