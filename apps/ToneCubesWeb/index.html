@@ -118,8 +118,10 @@ $('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
 step=0;
 $("#startload").fadeOut();
 $("#content").fadeIn();
+if(tm){
 $("#tmtitle").fadeIn();
 setTimeout('$("#tmtitle").fadeOut();', 4000);
+}
 }
 var run=false;
 var score=0;
