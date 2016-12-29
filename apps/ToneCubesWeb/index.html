@@ -118,6 +118,8 @@ $('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
 step=0;
 $("#startload").fadeOut();
 $("#content").fadeIn();
+$("#tmtitle").fadeIn();
+setTimeout('$("#tmtitle").fadeOut();', 4000);
 }
 var run=false;
 var score=0;
@@ -561,6 +563,7 @@ a:active { color: #000000; }
 <div id="content" style="display:none;">
 <audio id="tm" controls style="width:100%; display:none;" loop></audio>
 <p style="position: absolute; left: 10%; top: 10%; font-size:350%;">ToneCubesWebEd.</p>
+<p id="tmtitle" style="display:none; position: absolute; right: 10px; top: -6px;">▶<b>Tobu & Itro - Sunburst [NCS Release]</b></p>
 <div style="position: absolute; right: 10%; top: calc(35% + 56px); height: 45%; display:inline-block;">
 <img src="data/Transparency_0.png" style="width: auto; height: 100%;">
 <a href="javascript:$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');step=1;menuclick();"><img id="top" src="data/list_0.png" class="menuback"></a>
