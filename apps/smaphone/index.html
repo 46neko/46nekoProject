@@ -35,12 +35,9 @@ body{
 </head>
 <body>
 <div style="height:calc(25% - 10px);　position: absolute; right: 0px; top: -10px;">
-<p style="font-size: x-large; margin:0;">スマフォン</p>
-<div style="width:85%">
-スマフォンは<a href="http://www.maywadenki.com/">明和電機</a>が開発した電子楽器<a href="http://www.maywadenki.com/products/goods/otamatone%E3%80%80/">オタマトーン</a>のように演奏できることを目指して開発しました。<br>
-音程が無段階のため直感的に演奏することができます。
-</div>
-<a href="#" class="btn" style="position: absolute; right: 10px; top: 10px;" onclick="changetone();"><div style="display: inline-block;" id="space"></div></a>
+<p style="font-size: x-large;">スマフォン</p>
+<div style="width:85%"></div>
+<a href="javascript:changetone();" class="btn" style="position: absolute; right: 10px; top: 10px;"><div style="display: inline-block;" id="space"></div></a>
 </div>
 <div style="width:calc(100% - 2px); height:50%; border:1px #000000 solid; background:#FFFFFF;" id="touchbar">
 <table border="1" style="table-layout: fixed; width:100%; height:100%; border-collapse: collapse;">
@@ -90,11 +87,8 @@ sound.start(0);
 }
 (function (){
 var onclick=false;
-
-	// 各エレメントを取得
-	var element = document.getElementById("touchbar");
-
-	function MouseDownFunc(e){
+var element = document.getElementById("touchbar");
+function MouseDownFunc(e){
 try{
 sound.stop();
 }catch(e){}
@@ -105,12 +99,12 @@ mouseX = e.pageX ;	// X座標
 mouseY = e.pageY ;	// Y座標
 var pitch=mouseX*(24/window.innerWidth);
 Play(39.5+pitch+basetone*10,tonetype);
-	}
-	function MouseUpFunc(e){
+}
+function MouseUpFunc(e){
 onclick=false;
 sound.stop();
-	}
-	function MouseMoveFunc(e){
+}
+function MouseMoveFunc(e){
 if(onclick){
 var mouseX;
 var mouseY;
@@ -119,12 +113,12 @@ mouseY = e.pageY ;	// Y座標
 var pitch=mouseX*(24/window.innerWidth);
 sound.frequency.value = 27.500 * Math.pow(Math.pow(Math.sqrt(2), 1 / (12 / 2)), 39.5+pitch+basetone*10 - 1);
 }
-	}
+}
 
 function touchHandler(e) {
 e.preventDefault();
-  switch (e.type) {
-    case "touchstart" :
+switch (e.type) {
+case "touchstart" :
 var mouseX;
 var mouseY;
 mouseX = e.changedTouches[0].pageX ;	// X座標
@@ -135,68 +129,59 @@ sound.stop();
 onclick=true;
 var pitch=mouseX*(24/window.innerWidth);
 Play(39.5+pitch+basetone*10,tonetype);
-      break;
-    case "touchend" :
+break;
+case "touchend" :
 sound.stop();
-      break;
-    case "touchmove" :
+break;
+case "touchmove" :
 var mouseX;
 var mouseY;
 mouseX = e.changedTouches[0].pageX ;	// X座標
 mouseY = e.changedTouches[0].pageY ;	// Y座標
 var pitch=mouseX*(24/window.innerWidth);
 sound.frequency.value = 27.500 * Math.pow(Math.pow(Math.sqrt(2), 1 / (12 / 2)), 39.5+pitch+basetone*10 - 1);
-      break;
-  }
+break;
+}
 }
 
-	if(element.addEventListener){
-
-		// マウスのボタンを押すと実行されるイベント
-		element.addEventListener("mousedown" , MouseDownFunc);
-		// マウスのボタンを離すと実行されるイベント
-		element.addEventListener("mouseup" , MouseUpFunc);
-		// マウスカーソルが移動するたびに実行されるイベント
-		element.addEventListener("mousemove" , MouseMoveFunc);
+if(element.addEventListener){
+element.addEventListener("mousedown" , MouseDownFunc);
+// マウスのボタンを離すと実行されるイベント
+element.addEventListener("mouseup" , MouseUpFunc);
+// マウスカーソルが移動するたびに実行されるイベント
+element.addEventListener("mousemove" , MouseMoveFunc);
 if(window.TouchEvent){
-		//以下タップ用
-		element.addEventListener("touchstart", touchHandler);
-		element.addEventListener("touchmove", touchHandler);
-		element.addEventListener("touchend", touchHandler);
-		element.addEventListener("touchcancel", touchHandler);
+//以下タップ用
+element.addEventListener("touchstart", touchHandler);
+element.addEventListener("touchmove", touchHandler);
+element.addEventListener("touchend", touchHandler);
+element.addEventListener("touchcancel", touchHandler);
 }
-
-		// コンテキストメニューが表示される直前に実行されるイベント
-		element.addEventListener("contextmenu" , function (e){
-			// コンテキストメニューの表示を無効化
-			e.preventDefault();
-		});
-
-	// アタッチイベントに対応している
-	}else if(element.attachEvent){
-
-		// マウスのボタンを押すと実行されるイベント
-		element.attachEvent("onmousedown" , MouseDownFunc);
-		// マウスのボタンを離すと実行されるイベント
-		element.attachEvent("onmouseup" , MouseUpFunc);
-		// マウスカーソルが移動するたびに実行されるイベント
-		element.attachEvent("onmousemove" , MouseMoveFunc);
+// コンテキストメニューが表示される直前に実行されるイベント
+element.addEventListener("contextmenu" , function (e){
+// コンテキストメニューの表示を無効化
+e.preventDefault();
+});
+// アタッチイベントに対応している
+}else if(element.attachEvent){
+// マウスのボタンを押すと実行されるイベント
+element.attachEvent("onmousedown" , MouseDownFunc);
+// マウスのボタンを離すと実行されるイベント
+element.attachEvent("onmouseup" , MouseUpFunc);
+// マウスカーソルが移動するたびに実行されるイベント
+element.attachEvent("onmousemove" , MouseMoveFunc);
 if(window.TouchEvent){
-		//以下タップ用
-		element.attachEvent("touchstart" , touchHandler);
-		element.attachEvent("touchmove" , touchHandler);
-		element.attachEvent("touchend" , touchHandler);
+//以下タップ用
+element.attachEvent("touchstart" , touchHandler);
+element.attachEvent("touchmove" , touchHandler);
+element.attachEvent("touchend" , touchHandler);
 }
-
-		// コンテキストメニューが表示される直前に実行されるイベント
-		element.attachEvent("oncontextmenu" , function (e){
-			// コンテキストメニューの表示を無効化
-			return false;
-		});
-
-	}
-
-
+// コンテキストメニューが表示される直前に実行されるイベント
+element.attachEvent("oncontextmenu" , function (e){
+// コンテキストメニューの表示を無効化
+return false;
+});
+}
 })();
 --></script>
 </body>
