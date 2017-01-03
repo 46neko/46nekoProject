@@ -7,40 +7,7 @@
 <link rel="icon" href="favicon.ico" type="image/vnd.microsoft.icon">
 <script src="https://code.jquery.com/jquery.min.js"></script>
 <style>
-body{
-  overflow:hidden;
-  margin:0px;
-  -ms-content-zooming: none;
-}
-a:link { color: #ffffff; }
-a:visited { color: #ffffff; }
-a:hover { color: #dfdfdf; }
-a:active { color: #ffffff; }
-.on {
- position: absolute; left: 0px; top: 0px; width: 100%; height: calc(100% - 40px); background-color: rgba(255,255,255,0.6);
- transition: all 250ms 0s ease;
-}
-.off {
- position: absolute; left: 0px; bottom: 0px; width: 0px; height: 0px;
- transition: all 250ms 0s ease;
-}
-.tool {
- position: absolute; left: 0px; bottom: 40px; width: 450px; height: 300px; background-color: rgba(0,0,0,0.9);
- transition: all 250ms 0s ease;
-}
-.tooloff {
- position: absolute; left: 0px; bottom: 0px; width: 0px; height: 0px; background-color: rgba(0,0,0,0.9);
- transition: all 250ms 0s ease;
-}
-.menu {
- position: absolute; display: none; left: 0px; bottom: 0px; width: 8%; height: 8%;
- transition: all 300ms 0s ease;
-}
 
-.active {
- position: absolute; left: 0px; bottom: 40px; width: 450px; height: 80%; background-color: #000000; opacity: 0.9; color: #ffffff; font-size: 200%;
- transition: all 300ms 0s ease;
-}
 </style>
 </head>
 <body onload="loaded();" style="background-image: url(data/clover.png);background-attachment:fixed;background-position: center;background-repeat: no-repeat;">
