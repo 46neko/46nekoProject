@@ -83,6 +83,12 @@ a:active { color: #ffffff; }
 </div>
 <script>
 document.ondragstart = function(){return false;};
+window.onscroll = function(){
+var scrollTop =
+document.documentElement.scrollTop || // IE、Firefox、Opera
+document.body.scrollTop;              // Chrome、Safari
+if(scrollTop!=0)window.scrollTo(0,0);
+}
 function loaded(){
 var orient = window.onorientation;
 if(window.orientation==0||window.orientation==180){
