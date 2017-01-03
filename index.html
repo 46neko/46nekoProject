@@ -43,7 +43,10 @@ a:active { color: #ffffff; }
 }
 </style>
 </head>
-<body onload="loaded();" style="background-image: url(data/clover.png);background-size: auto 35%;background-attachment:fixed;background-position: center;background-repeat: no-repeat;">
+<body onload="loaded();">
+<div style="position: absolute; left: 0; top: 22.5%; width: 100%; height: 100%;">
+<center><img src="data/clover.png" style="width: auto; height: 35%;"></center>
+</div>
 <div id="run" class="off">
 <div style="position: absolute; left: 0px; top: 0px; width: 100%; height: 20px; background-color: #b0b0b0;">
 <div style="text-align: right; height: 100%;"><a href="#" onclick="popup();"><img src="data/new.png" style="width: auto; height: 100%;"></a><div style="width: 10px; display: inline-block;"></div><a href="#" onclick="closeRun();"><img src="data/close.png" style="width: auto; height: 100%;"></a></div>
@@ -79,6 +82,7 @@ a:active { color: #ffffff; }
 <center>画面を横向きに<br>してください</center>
 </div>
 <script>
+document.ondragstart = function(){return false;};
 function loaded(){
 var orient = window.onorientation;
 if(window.orientation==0||window.orientation==180){
