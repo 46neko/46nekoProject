@@ -67,7 +67,7 @@ a:active { color: #ffffff; }
 </div>
 <div style="position: absolute; left: 45px; top: 60px; font-size: 75%;">
 <a href='javascript:webWindow("apps/JavaScriptSpeedTest/index.html")'>JavaScriptSpeedTest</a><br>
-<a href='javascript:webWindow("apps/ToneCubesMod-OfficialHP/index.html")'>ToneCubesMod</a><br>
+<a href='javascript:webWindow("apps/ToneCubes/index.html")'>ToneCubes</a><br>
 <a href='javascript:webWindow("apps/smaphone/index.html")'>スマフォン</a>
 </div>
 </div>
@@ -137,7 +137,7 @@ document.getElementById("minitool").setAttribute("class","tooloff");
 document.getElementById("webminitool").setAttribute("src","");
 }
 function popup(){
-window.open(document.getElementById("project").getAttribute("src"));
+window.open(document.getElementById("project").src);
 }
 var zeroPadding = function(number, digit) {
     var numberLength = String(number).length;
