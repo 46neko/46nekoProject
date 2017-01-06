@@ -1,1 +1,1 @@
-﻿var musics=[["On my way v2 Free Short ver.","https://46neko.github.io/46nekoProject/apps/ToneCubes/musics/On_my_way_v2_Free_Short_ver..tcd","https://raw.githubusercontent.com/46neko/appdata/master/ToneCubesMod/musics/On_my_way_v2_Free_Short_ver.mp3"]];
+﻿var musics=[["On my way v2 Free Short ver.","http://46nekoproject.web.fc2.com/ToneCubesMod-OfficialHP/appdata/musics/On_my_way_v2_Free_Short_ver..tcd","https://raw.githubusercontent.com/46neko/appdata/master/ToneCubes/musics/On_my_way_v2_Free_Short_ver.mp3"]];
