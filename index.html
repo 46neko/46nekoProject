@@ -82,8 +82,6 @@ ToneCubesWebEd.にアクセスできるようにしました。
 <span style="font-size:24px; background-color: rgba(220,220,220,0.9);">進行中のプロジェクト</span><br>
 ToneCubesWebEd.
 </div>
-<div><br></div>
-<iframe src="http://46nekoproject.web.fc2.com/ninjaad.html" style="height: 250px; width: 300px; border: 0;"></iframe>
 </div>
 </div>
 <a href="javascript:flowerclick();"><img src="data/flower.png" id="flower" class="floweroff"></a>
@@ -127,7 +125,10 @@ window.onscroll = function(){
 var scrollTop =
 document.documentElement.scrollTop || // IE、Firefox、Opera
 document.body.scrollTop;              // Chrome、Safari
-if(scrollTop!=0)window.scrollTo(0,0);
+var scrollLeft =
+document.documentElement.scrollLeft || // IE、Firefox、Opera
+document.body.scrollLeft;              // Chrome、Safari
+if(scrollTop!=0||scrollLeft!=0)window.scrollTo(0,0);
 }
 function loaded(){
 var orient = window.onorientation;
