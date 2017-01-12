@@ -382,12 +382,15 @@ if(tm)document.getElementById("tm").play();
 }, false);
 }
 var orient = window.onorientation;
-if(typeof orient!='undefined'||window.orientation==0||window.orientation==180){
+if(typeof orient!='undefined'){
+if(window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
+}
 }
 $(window).on("orientationchange resize",function(){
 orient = window.onorientation;
-if(typeof orient!='undefined'||window.orientation==0||window.orientation==180){
+if(typeof orient!='undefined'){
+if(window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
 if(step==3&&!playmenu)playmenuclick();
 }else{
@@ -396,6 +399,7 @@ if(step==0)$('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
 if(step==1)$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 if(step==2)$('body,html').animate({scrollTop:$(window).outerHeight(true),scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 if(step==3)$('body,html').animate({scrollTop:$(window).outerHeight(true)*2,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
+}
 }
 });
 }
