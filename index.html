@@ -136,14 +136,20 @@ if(scrollTop!=0||scrollLeft!=0)window.scrollTo(0,0);
 }
 function loaded(){
 var orient = window.onorientation;
+if(typeof orient!='undefined'){
 if(window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
 }
+}
 $(window).on("orientationchange resize",function(){
+orient = window.onorientation;
+if(typeof orient!='undefined'){
 if(window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
+if(step==3&&!playmenu)playmenuclick();
 }else{
 document.getElementById("rotate").style.display="none";
+}
 }
 });
 var rand=Math.floor(Math.random()*3);
