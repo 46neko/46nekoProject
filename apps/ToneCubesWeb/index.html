@@ -382,13 +382,12 @@ if(tm)document.getElementById("tm").play();
 }, false);
 }
 var orient = window.onorientation;
-if(window.orientation==0||window.orientation==180){
+if(typeof orient!='undefined'||window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
 }
-alert(orient);
 $(window).on("orientationchange resize",function(){
 orient = window.onorientation;
-if(window.orientation==0||window.orientation==180){
+if(typeof orient!='undefined'||window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
 if(step==3&&!playmenu)playmenuclick();
 }else{
