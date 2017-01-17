@@ -206,6 +206,7 @@ case 66:tone(2,array[Math.ceil(document.getElementById('audio').currentTime*20)]
 case 78:tone(3,array[Math.ceil(document.getElementById('audio').currentTime*20)][3]);break;
 }
 };
+var etime;
 function tone(b,lid){
 var t=Math.ceil(document.getElementById('audio').currentTime*20);
 if(lid<13){
@@ -215,18 +216,36 @@ for(i=1;i<=5;i++){
 if(array[t-i][b]==14){
 score+=(13-i)*coefficient;
 array[t-i][b]=0;
+$("#effect").css("background-color","#1e90ff");
+document.getElementById("effect").setAttribute("class","opacity");
+clearTimeout(etime);
+etime = setTimeout(function(){
+document.getElementById("effect").setAttribute("class","transparent");
+},100);
 break;
 }
 }
 }else{
 for(i=lid;i<15;i++){
 array[t+i-lid][b]=0;
+$("#effect").css("background-color","#1e90ff");
+document.getElementById("effect").setAttribute("class","opacity");
+clearTimeout(etime);
+etime = setTimeout(function(){
+document.getElementById("effect").setAttribute("class","transparent");
+},100);
 }
 }
 }else{
 score+=15*coefficient;
 for(i=lid;i<15;i++){
 array[t+i-lid][b]=0;
+$("#effect").css("background-color","#ffa500");
+document.getElementById("effect").setAttribute("class","opacity");
+clearTimeout(etime);
+etime = setTimeout(function(){
+document.getElementById("effect").setAttribute("class","transparent");
+},100);
 }
 }
 }
@@ -382,14 +401,11 @@ if(tm)document.getElementById("tm").play();
 }, false);
 }
 var orient = window.onorientation;
-if(typeof orient!='undefined'){
 if(window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
 }
-}
 $(window).on("orientationchange resize",function(){
 orient = window.onorientation;
-if(typeof orient!='undefined'){
 if(window.orientation==0||window.orientation==180){
 document.getElementById("rotate").style.display="block";
 if(step==3&&!playmenu)playmenuclick();
@@ -399,7 +415,6 @@ if(step==0)$('body,html').animate({scrollTop:0,scrollLeft:0}, 300, 'swing');
 if(step==1)$('body,html').animate({scrollTop:0,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 if(step==2)$('body,html').animate({scrollTop:$(window).outerHeight(true),scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
 if(step==3)$('body,html').animate({scrollTop:$(window).outerHeight(true)*2,scrollLeft:$(window).outerWidth(true)}, 300, 'swing');
-}
 }
 });
 }
@@ -427,10 +442,10 @@ a:active { color: #000000; }
   text-shadow:0 1px 0 rgba(255,255,255,1),0 -1px 0 rgba(0,0,0,0.4);
 }
 .trim {
-    overflow: hidden;
-    width: 100%;
-    height: 100%;
-    position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  position: relative;
 }
 .trim img {
   position: absolute;
@@ -559,8 +574,15 @@ a:active { color: #000000; }
   transition: all 300ms 0s ease;
 }
 .blur{
-    -webkit-filter: blur(5px);
-    filter: blur(5px);
+  -webkit-filter: blur(5px);
+  filter: blur(5px);
+}
+.transparent{
+  opacity: 0.0;
+  transition: all 900ms 0s ease;
+}
+.opacity{
+  opacity: 1.0;
 }
 </style>
 </head>
@@ -600,6 +622,7 @@ a:active { color: #000000; }
 <div class="trim"><img src="data/loading.gif" alt=""></div>
 </div>
 <div style="position: absolute; left: 100%; top: 200%; width: 100%; height: 100%;">
+<div id="effect" class="transparent" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: #ffffff"></div>
 <div><audio id="audio" controls style="width:100%; display:none;"></audio>
 <a href="javascript:end();"><img id="list" src="data/list_0.png" class="playmenu"></a>
 <a href="javascript:replay();"><img id="replay" src="data/return_0.png" class="playmenu"></a>
