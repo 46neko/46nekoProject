@@ -1,0 +1,1246 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>絵画作成ツール</title>
+<script src="https://code.jquery.com/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+<script>
+var size;
+var ratio=[,];
+var imgs=[];
+var dx;
+var dy;
+function handleFileSelect(evt) {
+var files = evt.target.files
+for (var i = 0, f; f = files[i]; i++) {
+if (!f.type.match('image.*')) {
+continue;
+}
+var reader = new FileReader();
+reader.onload = (function(theFile) {
+return function(e) {
+document.getElementById("list").innerHTML+='<a href="javascript:select('+imgs.length+');"><img class="thumb" src="'+e.target.result+'" title="'+escape(theFile.name)+'"></a>';
+imgs.push(e.target.result);
+};
+})(f);
+reader.readAsDataURL(f);
+}
+}
+function make(){
+var canvas = document.getElementById("editcanvas");
+var option = document.make.quality.options;
+var value;
+for(var i=0;i<option.length;i++){
+if(option[ i ].selected){
+if(i==0){
+canvas.setAttribute("width", "256");
+canvas.setAttribute("height", "256");
+var ctx = canvas.getContext("2d");
+var img = new Image();
+img.src = "mid.png?" + new Date().getTime();
+img.crossOrigin = "Anonymous"; 
+img.onload = function() {
+ctx.drawImage(img, 0, 0);
+size=16;
+}
+}
+else if(i==1){
+canvas.setAttribute("width", "512");
+canvas.setAttribute("height", "512");
+var ctx = canvas.getContext("2d");
+var img = new Image();
+img.src = "high.png?" + new Date().getTime();
+img.crossOrigin = "Anonymous"; 
+img.onload = function() {
+ctx.drawImage(img, 0, 0);
+size=32;
+}
+}
+break;
+}
+}
+document.getElementById("changeartbase").style.display="none";
+ratio=[,];
+if(document.getElementById("trimborder")!=null){
+document.getElementById("trimborder").style.top="0px";
+document.getElementById("trimborder").style.left="0px";
+document.getElementById("trimborder").style.width="0px";
+document.getElementById("trimborder").style.height="0px";
+document.getElementById("trimborder").style.display="none";
+}
+document.getElementById("selecting").innerHTML='';
+document.getElementById("edit").style.display="block";
+}
+function select(i){
+if((typeof ratio[0])!="undefined"){
+document.getElementById("selecting").innerHTML='<br>トリミング<br><div style="position: relative;"><img class="selectingimg" id="trimimg" src="'+imgs[i]+'"><div id="trimborder" style="border: 3px solid #ffffff; display: none; position: absolute; top: 0px; left: 0px; width: 0px; height: 0px;"></div>　<a class="drawbtn" href="javascript:draw(imgs['+i+']);">Draw</a></div>';
+strim();
+}else{
+alert("入れ替える絵画を選択してください。");
+}
+}
+function draw(src){
+if(document.getElementById("trimborder").style.display=="block"){
+var canvas = document.getElementById("editcanvas");
+var ctx = canvas.getContext("2d");
+var img = new Image();
+img.src = src;
+var magnification = img.width / 512;
+ctx.drawImage(img,parseFloat(document.getElementById("trimborder").style.left)*magnification,parseFloat(document.getElementById("trimborder").style.top)*magnification,parseFloat(document.getElementById("trimborder").style.width)*magnification,parseFloat(document.getElementById("trimborder").style.height)*magnification,dx*size,dy*size,ratio[1]*size,ratio[0]*size);
+var imgdata = ctx.getImageData(dx*size, dy*size, ratio[1]*size, ratio[0]*size);
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", ratio[1]*size);
+canvas.setAttribute("height", ratio[0]*size);
+ctx.putImageData(imgdata, 0, 0);
+}else{
+alert("絵画に張り付ける範囲を選択してください。");
+}
+}
+function save(){
+var canvas = document.getElementById("editcanvas");
+var data_uri = canvas.toDataURL("image/png",1.0);
+var link = document.createElement('a');
+link.download = "kz.png";
+link.href = data_uri;
+link.click();
+}
+</script>
+<style>
+@font-face {
+font-family: "chogokuboso";
+src: url('data/chogokubosogothic.eot'),
+url('data/chogokubosogothic.woff');
+}
+body {
+background-image: url("data/background.jpg");
+margin:0px;
+font-family: "chogokuboso", "HGS明朝E", "ヒラギノ明朝 Pro W6","Hiragino Mincho Pro","ＭＳ Ｐ明朝",serif !important;
+}
+.makebtn {
+text-decoration: none;
+font-weight: bold;
+text-align: center;
+font-size: 13px;
+display: inline-block;
+border-top: 5px solid #C00;
+border-left: 5px solid #09C;
+border-right: 5px solid #9C0;
+border-bottom: 5px solid #FC0;
+color:#111;
+width: 100px;
+padding: 10px 0;
+}
+.drawbtn {
+text-decoration: none;
+font-weight: bold;
+text-align: center;
+font-size: 24px;
+display: inline-block;
+background-color: #32325a;
+color: #ffffff;
+padding: 5px 5px;
+position: relative;
+top: -5px;
+}
+.thumb {
+height: 75px;
+border: 1px solid #000;
+margin: 5px 5px 0px 0px;
+}
+.selectingimg {
+width: 512px;
+}
+</style>
+</head>
+<body>
+<div style="background-color: #ffffff;">
+<b style="font-size: 60px;">MCPE絵画作成ツール</b><br>
+<b>Chrome推奨です。IE、Edge、safariでは正常に動作しない可能性があります。</b>
+</div>
+<div style="width: 100%; height: 50px;"></div>
+<div style="background-color: #ffffff; width: 100%; display: inline-block;"><div style="margin:8px; min-height: 361px;"><b>
+<form name="make">
+<a class="makebtn" href="javascript:make();">作成</a>
+サイズ:
+<select name="quality">
+<option value="default" selected>
+標準(16×16)</option>
+<option value="high">
+高画質(32×32)</option>
+</select>
+</form>
+<hr>
+<div id="edit" style="display:none; position: relative;">
+<a id="save" href="javascript:save();" style="position: absolute; top: 0px; right:0px;">kz.pngをダウンロード</a>
+<canvas id="editcanvas" width="0" height="0"></canvas>
+<div id="changeartbase" style="display:none;">　選択中の絵画:<canvas id="changeart" width="0" height="0"></canvas></div>
+<div id="selecting"></div>
+<div id="list"></div>
+<br>
+<div style="text-align: right;">
+画像のインポート:<input type="file" id="files" name="files[]" accept="image/*" multiple />
+</div>
+</div>
+</b></div></div>
+<div style="width: 100%; height: 30px;"></div>
+<script>
+document.getElementById('files').addEventListener('change', handleFileSelect, false);
+//マウス
+document.getElementById( "editcanvas" ).onmousedown = function (e){
+e.preventDefault();
+var mouseX = e.pageX ;
+var mouseY = e.pageY ;
+var element = document.getElementById( "editcanvas" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = Math.floor((mouseX - positionX)/size) ;
+var y = Math.floor((mouseY - positionY)/size) ;
+var canvas = document.getElementById("editcanvas");
+var ctx = canvas.getContext("2d");
+if(document.getElementById("trimborder")!=null)document.getElementById("trimborder").style.display="none";
+var paste=false;
+if(y==0){
+if(x<7){
+var imgdata = ctx.getImageData(x*size, y*size, size, size);
+dx=x;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", size);
+canvas.setAttribute("height", size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=1;
+ratio[1]=1;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, y*size, 4*size, 4*size);
+dx=12;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==1){
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-1)*size, 4*size, 4*size);
+dx=12;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==2){
+if(x<10){
+if(x%2==0){
+var imgdata = ctx.getImageData(x*size, y*size, 2*size, size);
+dx=x;
+dy=y;
+}
+if(x%2==1){
+var imgdata = ctx.getImageData((x-1)*size, y*size, 2*size, size);
+dx=x-1;
+dy=y;
+}
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 2*size);
+canvas.setAttribute("height", size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=1;
+ratio[1]=2;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 4*size);
+dx=12;
+dy=y-2;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==3){
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-3)*size, 4*size, 4*size);
+dx=12;
+dy=y-3;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==4){
+if(x<2){
+var imgdata = ctx.getImageData(x*size, y*size, size, 2*size);
+dx=x;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=1;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, y*size, 4*size, 3*size);
+dx=12;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==5){
+if(x<2){
+var imgdata = ctx.getImageData(x*size, (y-1)*size, size, 2*size);
+dx=x;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=1;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-1)*size, 4*size, 3*size);
+dx=12;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==6){
+if(x<4){
+var imgdata = ctx.getImageData(0, y*size, 4*size, 2*size);
+dx=0;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=4;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 3*size);
+dx=12;
+dy=y-2;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==7){
+if(x<4){
+var imgdata = ctx.getImageData(0, (y-1)*size, 4*size, 2*size);
+dx=0;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=4;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, y*size, 4*size, 3*size);
+dx=12;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==8){
+if(x<12){
+if(x%2==0){
+var imgdata = ctx.getImageData(x*size, y*size, 2*size, 2*size);
+dx=x;
+dy=y;
+}
+if(x%2==1){
+var imgdata = ctx.getImageData((x-1)*size, y*size, 2*size, 2*size);
+dx=x-1;
+dy=y;
+}
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 2*size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=2;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-1)*size, 4*size, 3*size);
+dx=12;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==9){
+if(x<12){
+if(x%2==0){
+var imgdata = ctx.getImageData(x*size, (y-1)*size, 2*size, 2*size);
+dx=x;
+dy=y-1;
+}
+if(x%2==1){
+var imgdata = ctx.getImageData((x-1)*size, (y-1)*size, 2*size, 2*size);
+dx=x-1;
+dy=y-1;
+}
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 2*size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=2;
+paste=true;
+}
+if(x>11){
+if(x==12)var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 3*size);
+dx=12;
+dy=y-2;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y>11){
+if(x<12){
+var imgdata = ctx.getImageData((x-(x%4))*size, 12*size, 4*size, 4*size);
+dx=(x-(x%4));
+dy=12;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(paste){
+}
+if(!paste)document.getElementById("changeartbase").style.display="none";
+} ;
+//タッチ
+document.getElementById( "editcanvas" ).touchstart = function (e){
+e.preventDefault();
+var mouseX = e.changedTouches[0].pageX ;
+var mouseY = e.changedTouches[0].pageY ;
+var element = document.getElementById( "editcanvas" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = Math.floor((mouseX - positionX)/size) ;
+var y = Math.floor((mouseY - positionY)/size) ;
+var canvas = document.getElementById("editcanvas");
+var ctx = canvas.getContext("2d");
+if(document.getElementById("trimborder")!=null)document.getElementById("trimborder").style.display="none";
+var paste=false;
+if(y==0){
+if(x<7){
+var imgdata = ctx.getImageData(x*size, y*size, size, size);
+dx=x;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", size);
+canvas.setAttribute("height", size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=1;
+ratio[1]=1;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, y*size, 4*size, 4*size);
+dx=12;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==1){
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-1)*size, 4*size, 4*size);
+dx=12;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==2){
+if(x<10){
+if(x%2==0){
+var imgdata = ctx.getImageData(x*size, y*size, 2*size, size);
+dx=x;
+dy=y;
+}
+if(x%2==1){
+var imgdata = ctx.getImageData((x-1)*size, y*size, 2*size, size);
+dx=x-1;
+dy=y;
+}
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 2*size);
+canvas.setAttribute("height", size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=1;
+ratio[1]=2;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 4*size);
+dx=12;
+dy=y-2;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==3){
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-3)*size, 4*size, 4*size);
+dx=12;
+dy=y-3;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==4){
+if(x<2){
+var imgdata = ctx.getImageData(x*size, y*size, size, 2*size);
+dx=x;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=1;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, y*size, 4*size, 3*size);
+dx=12;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==5){
+if(x<2){
+var imgdata = ctx.getImageData(x*size, (y-1)*size, size, 2*size);
+dx=x;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=1;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-1)*size, 4*size, 3*size);
+dx=12;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==6){
+if(x<4){
+var imgdata = ctx.getImageData(0, y*size, 4*size, 2*size);
+dx=0;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=4;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 3*size);
+dx=12;
+dy=y-2;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==7){
+if(x<4){
+var imgdata = ctx.getImageData(0, (y-1)*size, 4*size, 2*size);
+dx=0;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=4;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, y*size, 4*size, 3*size);
+dx=12;
+dy=y;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==8){
+if(x<12){
+if(x%2==0){
+var imgdata = ctx.getImageData(x*size, y*size, 2*size, 2*size);
+dx=x;
+dy=y;
+}
+if(x%2==1){
+var imgdata = ctx.getImageData((x-1)*size, y*size, 2*size, 2*size);
+dx=x-1;
+dy=y;
+}
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 2*size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=2;
+paste=true;
+}
+if(x>11){
+var imgdata = ctx.getImageData(12*size, (y-1)*size, 4*size, 3*size);
+dx=12;
+dy=y-1;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y==9){
+if(x<12){
+if(x%2==0){
+var imgdata = ctx.getImageData(x*size, (y-1)*size, 2*size, 2*size);
+dx=x;
+dy=y-1;
+}
+if(x%2==1){
+var imgdata = ctx.getImageData((x-1)*size, (y-1)*size, 2*size, 2*size);
+dx=x-1;
+dy=y-1;
+}
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 2*size);
+canvas.setAttribute("height", 2*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=2;
+ratio[1]=2;
+paste=true;
+}
+if(x>11){
+if(x==12)var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 3*size);
+dx=12;
+dy=y-2;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 3*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=3;
+ratio[1]=4;
+paste=true;
+}
+}
+if(y>11){
+if(x<12){
+var imgdata = ctx.getImageData((x-(x%4))*size, 12*size, 4*size, 4*size);
+dx=(x-(x%4));
+dy=12;
+canvas = document.getElementById("changeart");
+ctx = canvas.getContext("2d");
+canvas.setAttribute("width", 4*size);
+canvas.setAttribute("height", 4*size);
+ctx.putImageData(imgdata, 0, 0);
+document.getElementById("changeartbase").style.display="inline-block";
+ratio[0]=4;
+ratio[1]=4;
+paste=true;
+}
+}
+if(paste){
+}
+if(!paste)document.getElementById("changeartbase").style.display="none";
+} ;
+var trim=false;
+var trims=[,];
+function strim(){
+//マウス
+document.getElementById( "trimimg" ).onmousedown = function (e){
+e.preventDefault();
+var mouseX = e.pageX ;
+var mouseY = e.pageY ;
+var element = document.getElementById( "trimimg" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = mouseX - positionX ;
+var y = mouseY - positionY ;
+trims[0]=y;
+trims[1]=x;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.left=x+"px";
+if(y>=trims[0]){
+var sizey=y-trims[0];
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var sizey=trims[0]-y;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+if(x>=trims[1]){
+var sizex=x-trims[1];
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var sizex=trims[1]-x;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+document.getElementById("trimborder").style.display="block";
+trim=true;
+} ;
+document.getElementById( "trimborder" ).onmousedown = function (e){
+e.preventDefault();
+var mouseX = e.pageX ;
+var mouseY = e.pageY ;
+var element = document.getElementById( "trimimg" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = mouseX - positionX ;
+var y = mouseY - positionY ;
+trims[0]=y;
+trims[1]=x;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.left=x+"px";
+if(y>=trims[0]){
+var sizey=y-trims[0];
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var sizey=trims[0]-y;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+if(x>=trims[1]){
+var sizex=x-trims[1];
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var sizex=trims[1]-x;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+document.getElementById("trimborder").style.display="block";
+trim=true;
+} ;
+document.getElementById( "trimimg" ).onmousemove = function (e){
+if(trim){
+e.preventDefault();
+var mouseX = e.pageX ;
+var mouseY = e.pageY ;
+var element = document.getElementById( "trimimg" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = mouseX - positionX ;
+var y = mouseY - positionY ;
+if(y>=trims[0]){
+var sizey=y-trims[0];
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var sizey=trims[0]-y;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+if(x>=trims[1]){
+var sizex=x-trims[1];
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var sizex=trims[1]-x;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+if(sizey/ratio[0]<sizex/ratio[1]){
+if(x>=trims[1]){
+sizex=ratio[1]*(sizey/ratio[0]);
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var osizex=sizex;
+sizex=ratio[1]*(sizey/ratio[0]);
+x+=osizex-sizex;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+}
+if(sizey/ratio[0]>sizex/ratio[1]){
+if(y>=trims[0]){
+sizey=ratio[0]*(sizex/ratio[1]);
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var osizey=sizey;
+sizey=ratio[0]*(sizex/ratio[1]);
+y+=osizey-sizey;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+}
+}
+};
+document.getElementById( "trimborder" ).onmousemove = function (e){
+if(trim){
+e.preventDefault();
+var mouseX = e.pageX ;
+var mouseY = e.pageY ;
+var element = document.getElementById( "trimimg" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = mouseX - positionX ;
+var y = mouseY - positionY ;
+if(y>=trims[0]){
+var sizey=y-trims[0];
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var sizey=trims[0]-y;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+if(x>=trims[1]){
+var sizex=x-trims[1];
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var sizex=trims[1]-x;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+if(sizey/ratio[0]<sizex/ratio[1]){
+if(x>=trims[1]){
+sizex=ratio[1]*(sizey/ratio[0]);
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var osizex=sizex;
+sizex=ratio[1]*(sizey/ratio[0]);
+x+=osizex-sizex;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+}
+if(sizey/ratio[0]>sizex/ratio[1]){
+if(y>=trims[0]){
+sizey=ratio[0]*(sizex/ratio[1]);
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var osizey=sizey;
+sizey=ratio[0]*(sizex/ratio[1]);
+y+=osizey-sizey;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+}
+}
+};
+document.getElementById( "trimimg" ).onmouseup = function (e){
+if(trim){
+e.preventDefault();
+trim=false;
+}
+};
+document.getElementById( "trimborder" ).onmouseup = function (e){
+if(trim){
+e.preventDefault();
+trim=false;
+}
+};
+//タッチ
+document.getElementById( "trimimg" ).touchstart = function (e){
+e.preventDefault();
+var mouseX = e.changedTouches[0].pageX ;
+var mouseY = e.changedTouches[0].pageY ;
+var element = document.getElementById( "trimimg" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = mouseX - positionX ;
+var y = mouseY - positionY ;
+trims[0]=y;
+trims[1]=x;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.left=x+"px";
+if(y>=trims[0]){
+var sizey=y-trims[0];
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var sizey=trims[0]-y;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+if(x>=trims[1]){
+var sizex=x-trims[1];
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var sizex=trims[1]-x;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+document.getElementById("trimborder").style.display="block";
+trim=true;
+} ;
+document.getElementById( "trimborder" ).touchstart = function (e){
+e.preventDefault();
+var mouseX = e.changedTouches[0].pageX ;
+var mouseY = e.changedTouches[0].pageY ;
+var element = document.getElementById( "trimimg" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = mouseX - positionX ;
+var y = mouseY - positionY ;
+trims[0]=y;
+trims[1]=x;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.left=x+"px";
+if(y>=trims[0]){
+var sizey=y-trims[0];
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var sizey=trims[0]-y;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+if(x>=trims[1]){
+var sizex=x-trims[1];
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var sizex=trims[1]-x;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+document.getElementById("trimborder").style.display="block";
+trim=true;
+} ;
+document.getElementById( "trimimg" ).touchmove = function (e){
+if(trim){
+e.preventDefault();
+var mouseX = e.changedTouches[0].pageX ;
+var mouseY = e.changedTouches[0].pageY ;
+var element = document.getElementById( "trimimg" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = mouseX - positionX ;
+var y = mouseY - positionY ;
+if(y>=trims[0]){
+var sizey=y-trims[0];
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var sizey=trims[0]-y;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+if(x>=trims[1]){
+var sizex=x-trims[1];
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var sizex=trims[1]-x;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+if(sizey/ratio[0]<sizex/ratio[1]){
+if(x>=trims[1]){
+sizex=ratio[1]*(sizey/ratio[0]);
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var osizex=sizex;
+sizex=ratio[1]*(sizey/ratio[0]);
+x+=osizex-sizex;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+}
+if(sizey/ratio[0]>sizex/ratio[1]){
+if(y>=trims[0]){
+sizey=ratio[0]*(sizex/ratio[1]);
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var osizey=sizey;
+sizey=ratio[0]*(sizex/ratio[1]);
+y+=osizey-sizey;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+}
+}
+};
+document.getElementById( "trimborder" ).touchmove = function (e){
+if(trim){
+e.preventDefault();
+var mouseX = e.changedTouches[0].pageX ;
+var mouseY = e.changedTouches[0].pageY ;
+var element = document.getElementById( "trimimg" ) ;
+var rect = element.getBoundingClientRect() ;
+var positionX = rect.left + window.pageXOffset ;
+var positionY = rect.top + window.pageYOffset ;
+var x = mouseX - positionX ;
+var y = mouseY - positionY ;
+if(y>=trims[0]){
+var sizey=y-trims[0];
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var sizey=trims[0]-y;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+if(x>=trims[1]){
+var sizex=x-trims[1];
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var sizex=trims[1]-x;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+if(sizey/ratio[0]<sizex/ratio[1]){
+if(x>=trims[1]){
+sizex=ratio[1]*(sizey/ratio[0]);
+document.getElementById("trimborder").style.width=sizex+"px";
+document.getElementById("trimborder").style.left=trims[1]+"px";
+}else{
+var osizex=sizex;
+sizex=ratio[1]*(sizey/ratio[0]);
+x+=osizex-sizex;
+document.getElementById("trimborder").style.left=x+"px";
+document.getElementById("trimborder").style.width=sizex+"px";
+}
+}
+if(sizey/ratio[0]>sizex/ratio[1]){
+if(y>=trims[0]){
+sizey=ratio[0]*(sizex/ratio[1]);
+document.getElementById("trimborder").style.height=sizey+"px";
+document.getElementById("trimborder").style.top=trims[0]+"px";
+}else{
+var osizey=sizey;
+sizey=ratio[0]*(sizex/ratio[1]);
+y+=osizey-sizey;
+document.getElementById("trimborder").style.top=y+"px";
+document.getElementById("trimborder").style.height=sizey+"px";
+}
+}
+}
+};
+document.getElementById( "trimimg" ).touchend = function (e){
+if(trim){
+e.preventDefault();
+trim=false;
+}
+};
+document.getElementById( "trimborder" ).touchend = function (e){
+if(trim){
+e.preventDefault();
+trim=false;
+}
+};
+}
+</script>
+</body>
+</html>
