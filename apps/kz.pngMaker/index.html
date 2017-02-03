@@ -73,7 +73,7 @@ document.getElementById("selecting").innerHTML='';
 document.getElementById("edit").style.display="block";
 }
 function select(i){
-if((typeof ratio[0])!="undefined"){
+if(document.getElementById("changeartbase").style.display!="none"){
 document.getElementById("selecting").innerHTML='<br>トリミング<br><div style="position: relative;"><img class="selectingimg" id="trimimg" src="'+imgs[i]+'"><div id="trimborder" style="border: 3px solid #ffffff; display: none; position: absolute; top: 0px; left: 0px; width: 0px; height: 0px;"></div>　<a class="drawbtn" href="javascript:draw(imgs['+i+']);">Draw</a></div>';
 strim();
 }else{
@@ -201,6 +201,7 @@ var y = Math.floor((mouseY - positionY)/size) ;
 var canvas = document.getElementById("editcanvas");
 var ctx = canvas.getContext("2d");
 if(document.getElementById("trimborder")!=null)document.getElementById("trimborder").style.display="none";
+document.getElementById("selecting").innerHTML='';
 var paste=false;
 if(y==0){
 if(x<7){
@@ -481,7 +482,7 @@ ratio[1]=2;
 paste=true;
 }
 if(x>11){
-if(x==12)var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 3*size);
+var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 3*size);
 dx=12;
 dy=y-2;
 canvas = document.getElementById("changeart");
@@ -511,10 +512,8 @@ ratio[1]=4;
 paste=true;
 }
 }
-if(paste){
-}
 if(!paste)document.getElementById("changeartbase").style.display="none";
-} ;
+};
 //タッチ
 document.getElementById( "editcanvas" ).touchstart = function (e){
 e.preventDefault();
@@ -529,6 +528,7 @@ var y = Math.floor((mouseY - positionY)/size) ;
 var canvas = document.getElementById("editcanvas");
 var ctx = canvas.getContext("2d");
 if(document.getElementById("trimborder")!=null)document.getElementById("trimborder").style.display="none";
+document.getElementById("selecting").innerHTML='';
 var paste=false;
 if(y==0){
 if(x<7){
@@ -809,7 +809,7 @@ ratio[1]=2;
 paste=true;
 }
 if(x>11){
-if(x==12)var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 3*size);
+var imgdata = ctx.getImageData(12*size, (y-2)*size, 4*size, 3*size);
 dx=12;
 dy=y-2;
 canvas = document.getElementById("changeart");
@@ -838,8 +838,6 @@ ratio[0]=4;
 ratio[1]=4;
 paste=true;
 }
-}
-if(paste){
 }
 if(!paste)document.getElementById("changeartbase").style.display="none";
 } ;
