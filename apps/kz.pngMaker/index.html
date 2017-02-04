@@ -1044,7 +1044,7 @@ trim=false;
 }
 };
 //タッチ
-funcion touchstart(e){
+function touchstart(e){
 e.preventDefault();
 var mouseX = e.changedTouches[0].pageX ;
 var mouseY = e.changedTouches[0].pageY ;
@@ -1079,7 +1079,7 @@ document.getElementById("trimborder").style.width=sizex+"px";
 document.getElementById("trimborder").style.display="block";
 trim=true;
 }
-funcion touchmove(e){
+function touchmove(e){
 if(trim){
 alert("ok");
 e.preventDefault();
@@ -1137,7 +1137,7 @@ document.getElementById("trimborder").style.height=sizey+"px";
 }
 }
 }
-funcion touchend(e){
+function touchend(e){
 if(trim){
 e.preventDefault();
 trim=false;
